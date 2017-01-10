@@ -1,0 +1,2745 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <tabs>
+        <pbxep translate="label comment" module="pbxep">
+            <label>Paybox</label>
+            <sort_order>400</sort_order>
+        </pbxep>
+    </tabs>
+    <sections>
+        <pbxep translate="label comment" module="pbxep">
+            <label>Presentation</label>
+            <tab>pbxep</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>350</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+        </pbxep>
+        <pbxep_merchant translate="label comment" module="pbxep">
+            <label>Account settings</label>
+            <tab>pbxep</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>351</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <environment translate="label comment">
+                    <label>Environment</label>
+                    <expanded>1</expanded>
+                    <frontend_type>text</frontend_type>
+                    <comment><![CDATA[In test mode your payments will not be sent to the bank.]]></comment>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <environment translate="label comment">
+                            <label>Environment</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_environment</source_model>
+                            <config_path>pbxep/environment</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </environment>
+                    </fields>
+                </environment>
+                <settings translate="label comment">
+                    <label>Account settings</label>
+                    <expanded>1</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <subscription translate="label comment">
+                            <label>Subscribed Paybox Solution</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_subscription</source_model>
+                            <config_path>pbxep/merchant/subscription</config_path>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </subscription>
+                        <site translate="label comment">
+                            <label>Site number</label>
+                            <comment><![CDATA[Site number provided by Paybox.]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <config_path>pbxep/merchant/site</config_path>
+                            <validate>required-entry validate-digits validate-exact-length length-7</validate>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </site>
+                        <rank translate="label comment">
+                            <label>Rank number</label>
+                            <comment><![CDATA[Rank number provided by Paybox (last 2 digits).]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <config_path>pbxep/merchant/rank</config_path>
+                            <validate>required-entry validate-digits validate-exact-length length-2</validate>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </rank>
+                        <identifier translate="label comment">
+                            <label>Login</label>
+                            <comment><![CDATA[Internal login provided by Paybox.]]></comment>
+                            <config_path>pbxep/merchant/identifier</config_path>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry validate-digits validate-length maximum-length-9</validate>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </identifier>
+                        <hmackey translate="label comment">
+                            <label>HMAC</label>
+                            <comment><![CDATA[Secrete HMAC key to create using the Paybox interface.]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>pbxep/admin_backend_encrypted</backend_model>
+                            <config_path>pbxep/merchant/hmackey</config_path>
+                            <validate>required-entry</validate>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </hmackey>
+                        <password translate="label comment">
+                            <label>Paybox Back Office password</label>
+                            <comment><![CDATA[Back Office password provided by Paybox.]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>pbxep/admin_backend_encrypted</backend_model>
+                            <config_path>pbxep/merchant/password</config_path>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <subscription>flexible</subscription>
+                            </depends>
+                        </password>
+                        <passwordplus translate="label comment">
+                            <label>Paybox Back Office password</label>
+                            <comment><![CDATA[Back Office password provided by Paybox.]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>pbxep/admin_backend_encrypted</backend_model>
+                            <config_path>pbxep/merchant/passwordplus</config_path>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <subscription>plus</subscription>
+                            </depends>
+                        </passwordplus>
+                    </fields>
+                </settings>
+                <misc translate="label comment">
+                    <label>Other options</label>
+                    <expanded>1</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <customer_info translate="label comment">
+                            <label>Show payment information to customers</label>
+                            <comment><![CDATA[Paybox module can show payment information to customer. You can disable this feature here.]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>pbxep/info_to_customer</config_path>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer_info>
+                    </fields>
+                    <fields>
+                        <currency translate="label comment">
+                            <label>Orders currencies</label>
+                            <comment><![CDATA[If multiple currencies are active on your store you can force the payment with the base currency or the currency selected by the customer when ordering.]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/config_source_CurrencyYesNo</source_model>
+                            <config_path>pbxep/info/currency</config_path>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </currency>
+                    </fields>
+                </misc>
+                <cron translate="label comment">
+                    <label>Cron configuration</label>
+                    <expanded>1</expanded>
+                    <frontend_type>text</frontend_type>
+                    <comment><![CDATA[]]></comment>
+                    <sort_order>50</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <cron_status translate="label comment">
+                            <label>Cron to Cancel old order</label>
+                            <comment><![CDATA[If yes, this cron will pass all orders awaiting Payment via Paybox to be canceled.]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>pbxep/cron_status</config_path>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cron_status>
+                        <cron_time translate="label comment">
+                            <label>Ages minute orders</label>
+                            <comment><![CDATA[If the order is older then it will be treated.]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <config_path>pbxep/cron_time</config_path>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <cron_status>1</cron_status>
+                            </depends>
+                        </cron_time>
+                        <cron_expression translate="label">
+                            <label>Cron expression</label>
+                            <frontend_type>text</frontend_type>
+                            <config_path>pbxep/cron_expression</config_path>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>e.g */15 * * * * </comment>
+                        </cron_expression>
+                    </fields>
+                </cron>
+                <!--technical translate="label comment">
+                    <label>Technical options</label>
+                    <expanded>0</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <debug translate="label comment">
+                            <label>Debug</label>
+                            <comment><![CDATA[Enable some debugging information.]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>pbxep/debug</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </debug>
+                        <allowedips translate="label comment">
+                            <label>Allowed IPs</label>
+                            <comment><![CDATA[A coma separated list of Paybox IPs.]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <config_path>pbxep/allowedips</config_path>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allowedips>
+                    </fields>
+                </technical-->
+            </groups>
+        </pbxep_merchant>
+        <pbxep_payments translate="label comment" module="pbxep">
+            <label>Payment methods</label>
+            <tab>pbxep</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>353</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <pbxep_cb translate="label comment">
+                    <label>Pay by Bank Card</label>
+                    <expanded>1</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/pbxep_cb/active</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <cctypes translate="label comment">
+                            <label>Card type</label>
+                            <comment><![CDATA[If you disable E-Carte Bleu, contact the Paybox support]]></comment>
+                            <config_path>payment/pbxep_cb/cctypes</config_path>
+                            <frontend_model>pbxep/admin_field_checkboxes</frontend_model>
+                            <frontend_type>checkboxes</frontend_type>
+                            <source_model>pbxep/admin_cards_cb</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </cctypes>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <config_path>payment/pbxep_cb/title</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </title>
+                        <sort_order translate="label comment">
+                            <label>Sort Order</label>
+                            <config_path>payment/pbxep_cb/sort_order</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </sort_order>
+                        <action translate="label comment">
+                            <label>Debit type</label>
+                            <frontend_model>pbxep/admin_field_select</frontend_model>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_payment_action</source_model>
+                            <config_path>payment/pbxep_cb/action</config_path>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </action>
+                        <delay translate="label comment">
+                            <label>Delay</label>
+                            <config_path>payment/pbxep_cb/delay</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_payment_delays</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <action>deferred</action>
+                                <active>1</active>
+                            </depends>
+                        </delay>
+                        <status translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Payment status</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status>
+                        <status_authorized translate="label comment">
+                            <label>Once authorized</label>
+                            <config_path>payment/pbxep_cb/status/authorized</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_pendingpayment</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_authorized>
+                        <status_paid translate="label comment">
+                            <label>Once paid</label>
+                            <config_path>payment/pbxep_cb/status/paid</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_processing</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status_paid>
+                        <status_auto_capture translate="label comment">
+                            <label>Automatic capture status</label>
+                            <config_path>payment/pbxep_cb/status/auto_capture</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_autocapture</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_auto_capture>
+                        <conditions translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Conditions</label>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </conditions>
+                        <allowspecific translate="label comment">
+                            <label>Payment from Applicable Countries</label>
+                            <config_path>payment/pbxep_cb/allowspecific</config_path>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>210</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </allowspecific>
+                        <specificcountry translate="label comment">
+                            <label>Payment from Specific Countries</label>
+                            <config_path>payment/pbxep_cb/specificcountry</config_path>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>220</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                                <active>1</active>
+                            </depends>
+                        </specificcountry>
+                        <min_order_total translate="label comment">
+                            <label>Minimum Order Total</label>
+                            <config_path>payment/pbxep_cb/min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </min_order_total>
+                        <max_order_total translate="label comment">
+                            <label>Maximum Order Total</label>
+                            <config_path>payment/pbxep_cb/max_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </max_order_total>
+                        <tds translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>3-D Secure</label>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </tds>
+                        <tds_info translate="label comment">
+                            <label><![CDATA[Make sure that the contract signed with your bank allows 3-D Secure before proceeding with setup.]]></label>
+                            <frontend_model>pbxep/admin_info</frontend_model>
+                            <sort_order>305</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </tds_info>
+                        <tds_active translate="label comment">
+                            <label>Enable 3-D Secure</label>
+                            <comment><![CDATA[<span style="color: red;">Warning: your bank may enforce 3-D Secure.<br/>Make sure your setup is coherent with your bank, Paybox and Magento module.</span>]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_payment_use3ds</source_model>
+                            <config_path>payment/pbxep_cb/tds_active</config_path>
+                            <sort_order>310</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </tds_active>
+                        <tds_min_order_total translate="label comment">
+                            <label>Minimum Order Amount</label>
+                            <config_path>payment/pbxep_cb/tds_min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>330</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <tds_active>condition</tds_active>
+                                <active>1</active>
+                            </depends>
+                        </tds_min_order_total>
+                    </fields>
+                </pbxep_cb>
+                <pbxep_threetime translate="label comment">
+                    <label>Pay by Card Three Times</label>
+                    <expanded>0</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <info translate="label comment">
+                            <label><![CDATA[Check your Paybox contract before enabling this option.]]></label>
+                            <frontend_model>pbxep/admin_info</frontend_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </info>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/pbxep_threetime/active</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <cctypes translate="label comment">
+                            <label>Card type</label>
+                            <comment><![CDATA[If you disable E-Carte Bleu, contact the Paybox support]]></comment>
+                            <config_path>payment/pbxep_threetime/cctypes</config_path>
+                            <frontend_model>pbxep/admin_field_checkboxes</frontend_model>
+                            <frontend_type>checkboxes</frontend_type>
+                            <source_model>pbxep/admin_cards_threetime</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </cctypes>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <config_path>payment/pbxep_threetime/title</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </title>
+                        <sort_order translate="label comment">
+                            <label>Sort Order</label>
+                            <config_path>payment/pbxep_threetime/sort_order</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </sort_order>
+                        <status translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Payment status</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status>
+                        <status_intermediary translate="label comment">
+                            <label>Once authorized</label>
+                            <config_path>payment/pbxep_threetime/status/intermediary</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_pendingpayment</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_intermediary>
+                        <status_paid translate="label comment">
+                            <label>Once paid</label>
+                            <config_path>payment/pbxep_threetime/status/paid</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_processing</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status_paid>
+                        <conditions translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Conditions</label>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </conditions>
+                        <allowspecific translate="label comment">
+                            <label>Payment from Applicable Countries</label>
+                            <config_path>payment/pbxep_threetime/allowspecific</config_path>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>210</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </allowspecific>
+                        <specificcountry translate="label comment">
+                            <label>Payment from Specific Countries</label>
+                            <config_path>payment/pbxep_threetime/specificcountry</config_path>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>220</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                                <active>1</active>
+                            </depends>
+                        </specificcountry>
+                        <min_order_total translate="label comment">
+                            <label>Minimum Order Total</label>
+                            <config_path>payment/pbxep_threetime/min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </min_order_total>
+                        <max_order_total translate="label comment">
+                            <label>Maximum Order Total</label>
+                            <config_path>payment/pbxep_threetime/max_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </max_order_total>
+                        <tds translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>3-D Secure</label>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </tds>
+                        <tds_info translate="label comment">
+                            <label><![CDATA[Make sure that the contract signed with your bank allows 3-D Secure before proceeding with setup.]]></label>
+                            <frontend_model>pbxep/admin_info</frontend_model>
+                            <sort_order>305</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </tds_info>
+                        <tds_active translate="label comment">
+                            <label>Enable 3-D Secure</label>
+                            <comment><![CDATA[<span style="color: red;">Warning: your bank may enforce 3-D Secure.<br/>Make sure your setup is coherent with your bank, Paybox and Magento module.</span>]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_payment_use3ds</source_model>
+                            <config_path>payment/pbxep_threetime/tds_active</config_path>
+                            <sort_order>310</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </tds_active>
+                        <tds_min_order_total translate="label comment">
+                            <label>Minimum Order Amount</label>
+                            <config_path>payment/pbxep_threetime/tds_min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>330</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <tds_active>condition</tds_active>
+                                <active>1</active>
+                            </depends>
+                        </tds_min_order_total>
+                    </fields>
+                </pbxep_threetime>
+                <pbxep_private translate="label comment">
+                    <label>Pay by Private Card</label>
+                    <expanded>0</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/pbxep_private/active</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <cctypes translate="label comment">
+                            <label>Card type</label>
+                            <config_path>payment/pbxep_private/cctypes</config_path>
+                            <frontend_model>pbxep/admin_field_checkboxes</frontend_model>
+                            <frontend_type>checkboxes</frontend_type>
+                            <source_model>pbxep/admin_cards_private</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </cctypes>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <config_path>payment/pbxep_private/title</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </title>
+                        <sort_order translate="label comment">
+                            <label>Sort Order</label>
+                            <config_path>payment/pbxep_private/sort_order</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </sort_order>
+                        <action translate="label comment">
+                            <label>Debit type</label>
+                            <frontend_model>pbxep/admin_field_select</frontend_model>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_payment_action</source_model>
+                            <config_path>payment/pbxep_private/action</config_path>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </action>
+                        <delay translate="label comment">
+                            <label>Delay</label>
+                            <config_path>payment/pbxep_private/delay</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_payment_delays</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <action>deferred</action>
+                                <active>1</active>
+                            </depends>
+                        </delay>
+                        <status translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Payment status</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status>
+                        <status_authorized translate="label comment">
+                            <label>Once authorized</label>
+                            <config_path>payment/pbxep_private/status/authorized</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_pendingpayment</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_authorized>
+                        <status_paid translate="label comment">
+                            <label>Once paid</label>
+                            <config_path>payment/pbxep_private/status/paid</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_processing</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status_paid>
+                        <status_auto_capture translate="label comment">
+                            <label>Automatic capture status</label>
+                            <config_path>payment/pbxep_private/status/auto_capture</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_autocapture</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_auto_capture>
+                        <conditions translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Conditions</label>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </conditions>
+                        <allowspecific translate="label comment">
+                            <label>Payment from Applicable Countries</label>
+                            <config_path>payment/pbxep_private/allowspecific</config_path>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>210</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </allowspecific>
+                        <specificcountry translate="label comment">
+                            <label>Payment from Specific Countries</label>
+                            <config_path>payment/pbxep_private/specificcountry</config_path>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>220</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                                <active>1</active>
+                            </depends>
+                        </specificcountry>
+                        <min_order_total translate="label comment">
+                            <label>Minimum Order Total</label>
+                            <config_path>payment/pbxep_private/min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </min_order_total>
+                        <max_order_total translate="label comment">
+                            <label>Maximum Order Total</label>
+                            <config_path>payment/pbxep_private/max_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </max_order_total>
+                    </fields>
+                </pbxep_private>
+                <pbxep_paypal translate="label comment">
+                    <label>Pay by Paypal</label>
+                    <expanded>0</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/pbxep_paypal/active</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <config_path>payment/pbxep_paypal/title</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </title>
+                        <sort_order translate="label comment">
+                            <label>Sort Order</label>
+                            <config_path>payment/pbxep_paypal/sort_order</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </sort_order>
+                        <action translate="label comment">
+                            <label>Debit type</label>
+                            <frontend_model>pbxep/admin_field_select</frontend_model>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_payment_actionpaypal</source_model>
+                            <config_path>payment/pbxep_paypal/action</config_path>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </action>
+                        <status translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Payment status</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status>
+                        <status_authorized translate="label comment">
+                            <label>Once authorized</label>
+                            <config_path>payment/pbxep_paypal/status/authorized</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_pendingpayment</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_authorized>
+                        <status_paid translate="label comment">
+                            <label>Once paid</label>
+                            <config_path>payment/pbxep_paypal/status/paid</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_processing</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status_paid>
+                        <status_auto_capture translate="label comment">
+                            <label>Automatic capture status</label>
+                            <config_path>payment/pbxep_paypal/status/auto_capture</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_autocapture</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_auto_capture>
+                        <conditions translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Conditions</label>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </conditions>
+                        <allowspecific translate="label comment">
+                            <label>Payment from Applicable Countries</label>
+                            <config_path>payment/pbxep_paypal/allowspecific</config_path>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>210</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </allowspecific>
+                        <specificcountry translate="label comment">
+                            <label>Payment from Specific Countries</label>
+                            <config_path>payment/pbxep_paypal/specificcountry</config_path>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>220</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                                <active>1</active>
+                            </depends>
+                        </specificcountry>
+                        <min_order_total translate="label comment">
+                            <label>Minimum Order Total</label>
+                            <config_path>payment/pbxep_paypal/min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </min_order_total>
+                        <max_order_total translate="label comment">
+                            <label>Maximum Order Total</label>
+                            <config_path>payment/pbxep_paypal/max_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </max_order_total>
+                    </fields>
+                </pbxep_paypal>
+                <pbxep_paylib translate="label comment">
+                    <label>Pay by Paylib</label>
+                    <expanded>0</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/pbxep_paylib/active</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <config_path>payment/pbxep_paylib/title</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </title>
+                        <sort_order translate="label comment">
+                            <label>Sort Order</label>
+                            <config_path>payment/pbxep_paylib/sort_order</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </sort_order>
+                        <!-- <action translate="label comment">
+                             <label>Debit type</label>
+                             <frontend_model>pbxep/admin_field_select</frontend_model>
+                             <frontend_type>select</frontend_type>
+                             <source_model>pbxep/admin_payment_action</source_model>
+                             <config_path>payment/pbxep_paylib/action</config_path>
+                             <sort_order>50</sort_order>
+                             <show_in_default>1</show_in_default>
+                             <show_in_website>1</show_in_website>
+                             <show_in_store>1</show_in_store>
+                             <depends>
+                                 <active>1</active>
+                             </depends>
+                        </action> -->
+                        <status translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Payment status</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status>
+                        <status_authorized translate="label comment">
+                            <label>Once authorized</label>
+                            <config_path>payment/pbxep_paylib/status/authorized</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_pendingpayment</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_authorized>
+                        <status_paid translate="label comment">
+                            <label>Once paid</label>
+                            <config_path>payment/pbxep_paylib/status/paid</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_processing</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status_paid>
+                        <status_auto_capture translate="label comment">
+                            <label>Automatic capture status</label>
+                            <config_path>payment/pbxep_paylib/status/auto_capture</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_autocapture</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_auto_capture>
+                        <conditions translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Conditions</label>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </conditions>
+                        <allowspecific translate="label comment">
+                            <label>Payment from Applicable Countries</label>
+                            <config_path>payment/pbxep_paylib/allowspecific</config_path>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>210</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </allowspecific>
+                        <specificcountry translate="label comment">
+                            <label>Payment from Specific Countries</label>
+                            <config_path>payment/pbxep_paylib/specificcountry</config_path>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>220</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                                <active>1</active>
+                            </depends>
+                        </specificcountry>
+                        <min_order_total translate="label comment">
+                            <label>Minimum Order Total</label>
+                            <config_path>payment/pbxep_paylib/min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </min_order_total>
+                        <max_order_total translate="label comment">
+                            <label>Maximum Order Total</label>
+                            <config_path>payment/pbxep_paylib/max_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </max_order_total>
+                    </fields>
+                </pbxep_paylib>
+                <pbxep_prepaid translate="label comment">
+                    <label>Pay by Saving or Prepaid Ticket</label>
+                    <expanded>0</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>50</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/pbxep_prepaid/active</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <cctypes translate="label comment">
+                            <label>Card type</label>
+                            <config_path>payment/pbxep_prepaid/cctypes</config_path>
+                            <frontend_model>pbxep/admin_field_checkboxes</frontend_model>
+                            <frontend_type>checkboxes</frontend_type>
+                            <source_model>pbxep/admin_cards_prepaid</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </cctypes>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <config_path>payment/pbxep_prepaid/title</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </title>
+                        <sort_order translate="label comment">
+                            <label>Sort Order</label>
+                            <config_path>payment/pbxep_prepaid/sort_order</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </sort_order>
+                        <status translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Payment status</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status>
+                        <status_authorized translate="label comment">
+                            <label>Once authorized</label>
+                            <config_path>payment/pbxep_prepaid/status/authorized</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_pendingpayment</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_authorized>
+                        <status_paid translate="label comment">
+                            <label>Once paid</label>
+                            <config_path>payment/pbxep_prepaid/status/paid</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_processing</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status_paid>
+                        <status_auto_capture translate="label comment">
+                            <label>Automatic capture status</label>
+                            <config_path>payment/pbxep_prepaid/status/auto_capture</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_autocapture</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_auto_capture>
+                        <conditions translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Conditions</label>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </conditions>
+                        <allowspecific translate="label comment">
+                            <label>Payment from Applicable Countries</label>
+                            <config_path>payment/pbxep_prepaid/allowspecific</config_path>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>210</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </allowspecific>
+                        <specificcountry translate="label comment">
+                            <label>Payment from Specific Countries</label>
+                            <config_path>payment/pbxep_prepaid/specificcountry</config_path>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>220</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                                <active>1</active>
+                            </depends>
+                        </specificcountry>
+                        <min_order_total translate="label comment">
+                            <label>Minimum Order Total</label>
+                            <config_path>payment/pbxep_prepaid/min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </min_order_total>
+                        <max_order_total translate="label comment">
+                            <label>Maximum Order Total</label>
+                            <config_path>payment/pbxep_prepaid/max_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </max_order_total>
+                    </fields>
+                </pbxep_prepaid>
+                <pbxep_financial translate="label comment">
+                    <label>Pay by Card and Means of Financing</label>
+                    <expanded>0</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>60</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/pbxep_financial/active</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <cctypes translate="label comment">
+                            <label>Card type</label>
+                            <config_path>payment/pbxep_financial/cctypes</config_path>
+                            <frontend_model>pbxep/admin_field_checkboxes</frontend_model>
+                            <frontend_type>checkboxes</frontend_type>
+                            <source_model>pbxep/admin_cards_financial</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </cctypes>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <config_path>payment/pbxep_financial/title</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </title>
+                        <sort_order translate="label comment">
+                            <label>Sort Order</label>
+                            <config_path>payment/pbxep_financial/sort_order</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </sort_order>
+                        <status translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Payment status</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status>
+                        <status_authorized translate="label comment">
+                            <label>Once authorized</label>
+                            <config_path>payment/pbxep_financial/status/authorized</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_pendingpayment</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_authorized>
+                        <status_paid translate="label comment">
+                            <label>Once paid</label>
+                            <config_path>payment/pbxep_financial/status/paid</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_processing</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status_paid>
+                        <status_auto_capture translate="label comment">
+                            <label>Automatic capture status</label>
+                            <config_path>payment/pbxep_financial/status/auto_capture</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_autocapture</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_auto_capture>
+                        <conditions translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Conditions</label>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </conditions>
+                        <allowspecific translate="label comment">
+                            <label>Payment from Applicable Countries</label>
+                            <config_path>payment/pbxep_financial/allowspecific</config_path>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>210</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </allowspecific>
+                        <specificcountry translate="label comment">
+                            <label>Payment from Specific Countries</label>
+                            <config_path>payment/pbxep_financial/specificcountry</config_path>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>220</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                                <active>1</active>
+                            </depends>
+                        </specificcountry>
+                        <min_order_total translate="label comment">
+                            <label>Minimum Order Total</label>
+                            <config_path>payment/pbxep_financial/min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </min_order_total>
+                        <max_order_total translate="label comment">
+                            <label>Maximum Order Total</label>
+                            <config_path>payment/pbxep_financial/max_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </max_order_total>
+                    </fields>
+                </pbxep_financial>
+                <pbxep_bcmc translate="label comment">
+                    <label>Pay by Bancontact Mister Cash</label>
+                    <expanded>0</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>70</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/pbxep_bcmc/active</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <config_path>payment/pbxep_bcmc/title</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </title>
+                        <sort_order translate="label comment">
+                            <label>Sort Order</label>
+                            <config_path>payment/pbxep_bcmc/sort_order</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </sort_order>
+                        <status translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Payment status</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status>
+                        <status_authorized translate="label comment">
+                            <label>Once authorized</label>
+                            <config_path>payment/pbxep_bcmc/status/authorized</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_pendingpayment</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_authorized>
+                        <status_paid translate="label comment">
+                            <label>Once paid</label>
+                            <config_path>payment/pbxep_bcmc/status/paid</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_processing</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status_paid>
+                        <status_auto_capture translate="label comment">
+                            <label>Automatic capture status</label>
+                            <config_path>payment/pbxep_bcmc/status/auto_capture</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_autocapture</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_auto_capture>
+                        <conditions translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Conditions</label>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </conditions>
+                        <allowspecific translate="label comment">
+                            <label>Payment from Applicable Countries</label>
+                            <config_path>payment/pbxep_bcmc/allowspecific</config_path>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>210</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </allowspecific>
+                        <specificcountry translate="label comment">
+                            <label>Payment from Specific Countries</label>
+                            <config_path>payment/pbxep_bcmc/specificcountry</config_path>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>220</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                                <active>1</active>
+                            </depends>
+                        </specificcountry>
+                        <min_order_total translate="label comment">
+                            <label>Minimum Order Total</label>
+                            <config_path>payment/pbxep_bcmc/min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </min_order_total>
+                        <max_order_total translate="label comment">
+                            <label>Maximum Order Total</label>
+                            <config_path>payment/pbxep_bcmc/max_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </max_order_total>
+                        <tds translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>3-D Secure</label>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </tds>
+                        <tds_info translate="label comment">
+                            <label><![CDATA[3-D Secure is mandatory for this payment method.]]></label>
+                            <frontend_model>pbxep/admin_info</frontend_model>
+                            <sort_order>305</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </tds_info>
+                    </fields>
+                </pbxep_bcmc>
+                <pbxep_maestro translate="label comment">
+                    <label>Pay by Maestro</label>
+                    <expanded>0</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>80</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/pbxep_maestro/active</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <config_path>payment/pbxep_maestro/title</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </title>
+                        <sort_order translate="label comment">
+                            <label>Sort Order</label>
+                            <config_path>payment/pbxep_maestro/sort_order</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </sort_order>
+                        <action translate="label comment">
+                            <label>Debit type</label>
+                            <frontend_model>pbxep/admin_field_select</frontend_model>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_payment_action</source_model>
+                            <config_path>payment/pbxep_maestro/action</config_path>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </action>
+                        <delay translate="label comment">
+                            <label>Delay</label>
+                            <config_path>payment/pbxep_maestro/delay</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_payment_delays</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <action>deferred</action>
+                                <active>1</active>
+                            </depends>
+                        </delay>
+                        <status translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Payment status</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status>
+                        <status_authorized translate="label comment">
+                            <label>Once authorized</label>
+                            <config_path>payment/pbxep_maestro/status/authorized</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_pendingpayment</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_authorized>
+                        <status_paid translate="label comment">
+                            <label>Once paid</label>
+                            <config_path>payment/pbxep_maestro/status/paid</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_processing</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status_paid>
+                        <status_auto_capture translate="label comment">
+                            <label>Automatic capture status</label>
+                            <config_path>payment/pbxep_maestro/status/auto_capture</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_autocapture</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_auto_capture>
+                        <conditions translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Conditions</label>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </conditions>
+                        <allowspecific translate="label comment">
+                            <label>Payment from Applicable Countries</label>
+                            <config_path>payment/pbxep_maestro/allowspecific</config_path>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>210</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </allowspecific>
+                        <specificcountry translate="label comment">
+                            <label>Payment from Specific Countries</label>
+                            <config_path>payment/pbxep_maestro/specificcountry</config_path>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>220</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                                <active>1</active>
+                            </depends>
+                        </specificcountry>
+                        <min_order_total translate="label comment">
+                            <label>Minimum Order Total</label>
+                            <config_path>payment/pbxep_maestro/min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </min_order_total>
+                        <max_order_total translate="label comment">
+                            <label>Maximum Order Total</label>
+                            <config_path>payment/pbxep_maestro/max_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </max_order_total>
+                        <tds translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>3-D Secure</label>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </tds>
+                        <tds_info translate="label comment">
+                            <label><![CDATA[3-D Secure is mandatory for this payment method.]]></label>
+                            <frontend_model>pbxep/admin_info</frontend_model>
+                            <sort_order>305</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </tds_info>
+                    </fields>
+                </pbxep_maestro>
+                <pbxep_paybuttons translate="label comment">
+                    <label>Pay by Paybutton</label>
+                    <expanded>0</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>90</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/pbxep_paybuttons/active</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <cctypes translate="label comment">
+                            <label>Card type</label>
+                            <config_path>payment/pbxep_paybuttons/cctypes</config_path>
+                            <frontend_model>pbxep/admin_field_checkboxes</frontend_model>
+                            <frontend_type>checkboxes</frontend_type>
+                            <source_model>pbxep/admin_cards_paybuttons</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </cctypes>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <config_path>payment/pbxep_paybuttons/title</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </title>
+                        <sort_order translate="label comment">
+                            <label>Sort Order</label>
+                            <config_path>payment/pbxep_paybuttons/sort_order</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </sort_order>
+                        <status translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Payment status</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status>
+                        <status_authorized translate="label comment">
+                            <label>Once authorized</label>
+                            <config_path>payment/pbxep_paybuttons/status/authorized</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_pendingpayment</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_authorized>
+                        <status_paid translate="label comment">
+                            <label>Once paid</label>
+                            <config_path>payment/pbxep_paybuttons/status/paid</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_processing</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status_paid>
+                        <status_auto_capture translate="label comment">
+                            <label>Automatic capture status</label>
+                            <config_path>payment/pbxep_paybuttons/status/auto_capture</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_autocapture</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_auto_capture>
+                        <conditions translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Conditions</label>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </conditions>
+                        <allowspecific translate="label comment">
+                            <label>Payment from Applicable Countries</label>
+                            <config_path>payment/pbxep_paybuttons/allowspecific</config_path>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>210</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </allowspecific>
+                        <specificcountry translate="label comment">
+                            <label>Payment from Specific Countries</label>
+                            <config_path>payment/pbxep_paybuttons/specificcountry</config_path>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>220</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                                <active>1</active>
+                            </depends>
+                        </specificcountry>
+                        <min_order_total translate="label comment">
+                            <label>Minimum Order Total</label>
+                            <config_path>payment/pbxep_paybuttons/min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </min_order_total>
+                        <max_order_total translate="label comment">
+                            <label>Maximum Order Total</label>
+                            <config_path>payment/pbxep_paybuttons/max_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </max_order_total>
+                    </fields>
+                </pbxep_paybuttons>
+            </groups>
+        </pbxep_payments><!-- 
+        <pbxep_kwixo translate="label comment" module="pbxep">
+            <label>Kwixo</label>
+            <tab>pbxep</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>354</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <fianet translate="label comment">
+                    <label>Informations FIA-NET</label>
+                    <expanded>1</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <default_category translate="label comment">
+                            <label>Catégorie par défaut</label>
+                            <config_path>pbxep/kwixo/default_category</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_fianet_categories</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_category>
+                        <shipping translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Informations sur les moyens de livraison</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipping>
+                        <shipping_info translate="label comment">
+                            <config_path>pbxep/kwixo/shipping</config_path>
+                            <frontend_model>pbxep/admin_kwixo_shipping</frontend_model>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_serialized</backend_model>
+                            <source_model>pbxep/admin_fianet_categories</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipping_info>
+                    </fields>
+                </fianet>
+                <kwixo_standard translate="label comment">
+                    <label>Paiement par Kwixo Standard</label>
+                    <expanded>1</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/pbxep_kwixo_standard/active</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <config_path>payment/pbxep_kwixo_standard/title</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </title>
+                        <sort_order translate="label comment">
+                            <label>Sort Order</label>
+                            <config_path>payment/pbxep_kwixo_standard/sort_order</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </sort_order>
+                        <status translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Payment status</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status>
+                        <status_authorized translate="label comment">
+                            <label>Once authorized</label>
+                            <config_path>payment/pbxep_kwixo_standard/status/authorized</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_pendingpayment</source_model>
+                            <validate>required-entry</validate>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_authorized>
+                        <status_paid translate="label comment">
+                            <label>Once paid</label>
+                            <config_path>payment/pbxep_kwixo_standard/status/paid</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_processing</source_model>
+                            <validate>required-entry</validate>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status_paid>
+                        <status_auto_capture translate="label comment">
+                            <label>Automatic capture status</label>
+                            <config_path>payment/pbxep_kwixo_standard/status/auto_capture</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_autocapture</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_auto_capture>
+                        <conditions translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Conditions</label>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </conditions>
+                        <allowspecific translate="label comment">
+                            <label>Payment from Applicable Countries</label>
+                            <config_path>payment/pbxep_kwixo_standard/allowspecific</config_path>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>210</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </allowspecific>
+                        <specificcountry translate="label comment">
+                            <label>Payment from Specific Countries</label>
+                            <config_path>payment/pbxep_kwixo_standard/specificcountry</config_path>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>220</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                                <active>1</active>
+                            </depends>
+                        </specificcountry>
+                        <min_order_total translate="label comment">
+                            <label>Minimum Order Total</label>
+                            <config_path>payment/pbxep_kwixo_standard/min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </min_order_total>
+                        <max_order_total translate="label comment">
+                            <label>Maximum Order Total</label>
+                            <config_path>payment/pbxep_kwixo_standard/max_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </max_order_total>
+                    </fields>
+                </kwixo_standard>
+                <kwixo_credit translate="label comment">
+                    <label>Paiement par Kwixo Credit</label>
+                    <expanded>1</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/pbxep_kwixo_credit/active</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <config_path>payment/pbxep_kwixo_credit/title</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </title>
+                        <sort_order translate="label comment">
+                            <label>Sort Order</label>
+                            <config_path>payment/pbxep_kwixo_credit/sort_order</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </sort_order>
+                        <status translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Payment status</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status>
+                        <status_authorized translate="label comment">
+                            <label>Once authorized</label>
+                            <config_path>payment/pbxep_kwixo_credit/status/authorized</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_pendingpayment</source_model>
+                            <validate>required-entry</validate>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_authorized>
+                        <status_paid translate="label comment">
+                            <label>Once paid</label>
+                            <config_path>payment/pbxep_kwixo_credit/status/paid</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_processing</source_model>
+                            <validate>required-entry</validate>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status_paid>
+                        <status_auto_capture translate="label comment">
+                            <label>Automatic capture status</label>
+                            <config_path>payment/pbxep_kwixo_credit/status/auto_capture</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_autocapture</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_auto_capture>
+                        <conditions translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Conditions</label>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </conditions>
+                        <allowspecific translate="label comment">
+                            <label>Payment from Applicable Countries</label>
+                            <config_path>payment/pbxep_kwixo_credit/allowspecific</config_path>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>210</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </allowspecific>
+                        <specificcountry translate="label comment">
+                            <label>Payment from Specific Countries</label>
+                            <config_path>payment/pbxep_kwixo_credit/specificcountry</config_path>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>220</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                                <active>1</active>
+                            </depends>
+                        </specificcountry>
+                        <min_order_total translate="label comment">
+                            <label>Minimum Order Total</label>
+                            <config_path>payment/pbxep_kwixo_credit/min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </min_order_total>
+                        <max_order_total translate="label comment">
+                            <label>Maximum Order Total</label>
+                            <config_path>payment/pbxep_kwixo_credit/max_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </max_order_total>
+                    </fields>
+                </kwixo_credit>
+                <kwixo_onexrnp translate="label comment">
+                    <label>Paiement par Kwixo 1xrnp</label>
+                    <expanded>1</expanded>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>payment/pbxep_kwixo_onexrnp/active</config_path>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label comment">
+                            <label>Title</label>
+                            <config_path>payment/pbxep_kwixo_onexrnp/title</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </title>
+                        <sort_order translate="label comment">
+                            <label>Sort Order</label>
+                            <config_path>payment/pbxep_kwixo_onexrnp/sort_order</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </sort_order>
+                        <status translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Payment status</label>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status>
+                        <status_authorized translate="label comment">
+                            <label>Once authorized</label>
+                            <config_path>payment/pbxep_kwixo_onexrnp/status/authorized</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_pendingpayment</source_model>
+                            <validate>required-entry</validate>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_authorized>
+                        <status_paid translate="label comment">
+                            <label>Once paid</label>
+                            <config_path>payment/pbxep_kwixo_onexrnp/status/paid</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_processing</source_model>
+                            <validate>required-entry</validate>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </status_paid>
+                        <status_auto_capture translate="label comment">
+                            <label>Automatic capture status</label>
+                            <config_path>payment/pbxep_kwixo_onexrnp/status/auto_capture</config_path>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pbxep/admin_order_status_autocapture</source_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <active>1</active>
+                                <action>manual</action>
+                            </depends>
+                        </status_auto_capture>
+                        <conditions translate="label comment">
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <label>Conditions</label>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </conditions>
+                        <allowspecific translate="label comment">
+                            <label>Payment from Applicable Countries</label>
+                            <config_path>payment/pbxep_kwixo_onexrnp/allowspecific</config_path>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>210</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </allowspecific>
+                        <specificcountry translate="label comment">
+                            <label>Payment from Specific Countries</label>
+                            <config_path>payment/pbxep_kwixo_onexrnp/specificcountry</config_path>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>220</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                                <active>1</active>
+                            </depends>
+                        </specificcountry>
+                        <min_order_total translate="label comment">
+                            <label>Minimum Order Total</label>
+                            <config_path>payment/pbxep_kwixo_onexrnp/min_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </min_order_total>
+                        <max_order_total translate="label comment">
+                            <label>Maximum Order Total</label>
+                            <config_path>payment/pbxep_kwixo_onexrnp/max_order_total</config_path>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <active>1</active>
+                            </depends>
+                        </max_order_total>
+                    </fields>
+                </kwixo_onexrnp>
+            </groups>
+        </pbxep_kwixo> -->
+    </sections>
+</config>

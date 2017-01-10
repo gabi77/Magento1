@@ -1,0 +1,5 @@
+.pbxep-payment-cards{text-align:center;}
+.pbxep-payment-card{display:inline-block;margin:0 30px;padding:3px;text-align:center}
+.pbxep-payment-card label{display:block;float:none;}
+.pbxep-payment-label{float:right;}
+.pbxep-payment-logo{height:20px;}

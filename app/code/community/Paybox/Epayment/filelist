@@ -1,0 +1,10 @@
+app/code/community/Paybox/Epayment
+app/design/adminhtml/default/default/layout/pbxep.xml
+app/design/adminhtml/default/default/template/pbxep/
+app/design/frontend/base/default/layout/pbxep.xml
+app/design/frontend/base/default/template/pbxep/
+app/etc/modules/Paybox_Epayment.xml
+app/locale/fr_FR/Paybox_Epayment.csv
+skin/adminhtml/default/default/images/paybox/
+skin/frontend/base/default/css/pbxep/
+skin/frontend/base/default/images/pbxep/

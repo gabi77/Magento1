@@ -1,0 +1,70 @@
+<?php
+/**
+ * Paybox Epayment module for Magento
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * available at : http://opensource.org/licenses/osl-3.0.php
+ *
+ * @package    Paybox_Epayment
+ * @copyright  Copyright (c) 2013-2014 Paybox
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+$values = $this->getFormFields();
+$helper = $this->helper('core');
+try {
+	if ($values['PBX_TYPEPAIEMENT'] == 'KWIXO') {
+    	$url = $helper->escapeUrl($this->getKwixoUrl());
+    }
+    else if (Mage::helper('pbxep/mobile')->isMobile()) {
+    	$url = $helper->escapeUrl($this->getMobileUrl());
+    }
+    else {
+    	$url = $helper->escapeUrl($this->getSystemUrl());
+    }
+   	$type = $helper->escapeUrl($this->getInputType());
+}
+catch (Exception $e) {
+    $error = $e;
+}
+
+if (isset($error)) {
+?>
+<p><center><?php echo $error->getMessage(); ?></center></p>
+<?php
+}
+else {
+?>
+<form id="pbxep_form" method="post" action="<?php echo $url; ?>" enctype="application/x-www-form-urlencoded">
+	<?php if ($type != 'hidden'): ?>
+	<p>
+		<?php echo $this->__('This is a debug view. Click continue to be redirected to Paybox payment page.'); ?>
+	</p>
+	<?php else: ?>
+	<p>
+		<?php echo $this->__('You will be redirected to the Paybox payment page. If not, please use the button bellow.'); ?>
+	</p>
+	<?php endif; ?>
+	<center><button><?php echo $this->__('Continue...'); ?></button></center>
+	<?php
+	foreach ($values as $name => $value):
+		$name = $helper->escapeHtml($name);
+		$value = $helper->escapeHtml($value);
+		if ($type != 'hidden'):
+	?>
+	<p><label for="<?php echo $name; ?>"><?php echo $name; ?></label>
+	<?php endif; ?>
+	<input type="<?php echo $type; ?>" id="<?php echo $name; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" />
+	<?php if ($type != 'hidden'): ?>
+	</p>
+	<?php endif; ?>
+	<?php endforeach; ?>
+</form>
+<?php if ($type == 'hidden'): ?>
+<script type="text/javascript">
+	window.setTimeout(function() {
+		document.getElementById('pbxep_form').submit();
+	}, 1);
+</script>
+<?php endif;
+}

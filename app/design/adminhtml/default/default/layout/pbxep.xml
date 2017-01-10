@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<layout>
+    <pbxep_pres>
+        <reference name="content">
+            <block type="pbxep/admin_presentation" name="pbxep_presentation"
+                after="content.child2"></block>
+        </reference>
+    </pbxep_pres>
+</layout>

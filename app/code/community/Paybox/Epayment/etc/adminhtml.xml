@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <pbxep translate="title" module="pbxep">
+                                        <title>Paybox Presentation</title>
+                                    </pbxep>
+                                    <pbxep_merchant translate="title" module="pbxep">
+                                        <title>Paybox Merchant Account</title>
+                                    </pbxep_merchant>
+                                    <pbxep_payments translate="title" module="pbxep">
+                                        <title>Paybox Payments</title>
+                                    </pbxep_payments><!-- 
+                                    <pbxep_kwixo translate="title" module="pbxep">
+                                        <title>Paybox Kwixo</title>
+                                    </pbxep_kwixo> -->
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
