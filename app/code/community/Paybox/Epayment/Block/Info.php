@@ -81,8 +81,20 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info {
 
     public function canRefund() {
         $info = $this->getInfo();
-        $capture = $info->getPbxepCapture();
         $config = $this->getPayboxConfig();
+
+        $order = $info->getOrder();
+        $method = $info->getOrder()->getPayment()->getMethodInstance();
+        if(!$method->getAllowRefund()){
+            return false;
+        }
+        
+        $action = $info->getPbxepAction();
+        if($action == 'three-time'){
+            $capture = $info->getPbxepFirstPayment();
+        }else{
+            $capture = $info->getPbxepCapture();
+        }
         if ($config->getSubscription() == Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER2 || $config->getSubscription() == Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER3) {
             return !empty($capture);
         }
@@ -173,6 +185,38 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info {
             }
         }
         return null;
+    }
+    
+    public function getRecurringDeleteUrl(){
+        $data = $this->getPayboxData();
+        $info = $this->getInfo();
+        return Mage::helper("adminhtml")->getUrl("*/pbxep/recurring", array(
+                    'order_id' => $info->getOrder()->getId(),
+        ));
+    }
+    
+    public function threeTimeClosed(){
+//        $info = $this->getInfo();
+//        $action = $info->getPbxepAction();
+//        if (is_null($action) || ($action != 'three-time')) {
+//            return null;
+//        }
+//        
+//        $data = $this->getPayboxData();
+//        var_dump($data);
+//        die();
+//        
+//        
+//        $txn = $this->getPayboxTransaction($payment, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE);
+        
+
+        $info = $this->getInfo();
+        $action = $info->getPbxepAction();
+        if (is_null($action) || ($action != 'three-time')) {
+            return true;
+        }
+
+        return false;
     }
 
 }

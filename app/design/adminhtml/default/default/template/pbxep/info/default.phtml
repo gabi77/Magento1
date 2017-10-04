@@ -113,5 +113,14 @@ if (($controllerName == 'sales_order') && $this->canRefund()):
 </button>
 <?php endif; ?>
 <?php endif; ?>
+<?php if (!$this->threeTimeClosed()): 
+    $url = $this->getRecurringDeleteUrl();
+?>
+<button type="button" class="scalable" title="<?php echo $this->__('Cancel recurring payment'); ?>" id="recurringtotal" onclick="setLocation('<?php echo $this->escapeHtml($url); ?>')">
+    <span>
+        <span><?php echo $this->__('Cancel recurring payment'); ?></span>
+    </span>
+</button>
+<?php endif; ?>
 <?php endif; ?>
 <?php echo $this->getChildHtml()?>

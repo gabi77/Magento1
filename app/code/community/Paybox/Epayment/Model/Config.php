@@ -68,7 +68,16 @@ class Paybox_Epayment_Model_Config {
                 'https://ppps.paybox.com/PPPS.php',
                 'https://ppps1.paybox.com/PPPS.php',
             ),
-        )
+        ),
+        'resabo' => array(
+            'test' => array(
+                'https://preprod-tpeweb.paybox.com/cgi-bin/ResAbon.cgi'
+            ),
+            'production' => array(
+                'https://tpeweb.paybox.com/cgi-bin/ResAbon.cgi',
+                'https://tpeweb1.paybox.com/cgi-bin/ResAbon.cgi',
+            ),
+        ),
     );
 
     public function __call($name, $args) {
@@ -185,13 +194,17 @@ class Paybox_Epayment_Model_Config {
     public function getCronTime() {
         return $this->_getConfigValue('pbxep/cron_time');
     }
-    
+
     public function getCurrencyConfig() {
         $value = $this->_getConfigValue('pbxep/info/currency');
         if (is_null($value)) {
             $value = 1;
         }
         return (int) $value;
+    }
+
+    public function getResAboUrls($environment = null) {
+        return $this->_getUrls('resabo', $environment);
     }
 
     public function getShowInfoToCustomer() {

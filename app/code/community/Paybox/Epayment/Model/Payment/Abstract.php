@@ -588,6 +588,32 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
 
         return $this;
     }
+    
+    /**
+     * Refund specified amount for payment
+     *
+     */
+    public function deleteRecurringPayment(Order $order)
+    {
+        $paybox = $this->getPaybox();
+        $this->logDebug(sprintf('Order %s: Cancel recurring payment - calling directRecurringDelete', $order->getIncrementId()));
+        $result = $paybox->directRecurringDelete($order);
+        $this->logDebug(sprintf('Order %s: Cancel recurring payment - response code %s', $order->getIncrementId(), $result['ERREUR']));
+        
+        // Check answer
+        if ($result['ACQ'] != 'OK') {
+            $message = $this->__('Unable to cancel recurring payment.')."\r\n";
+            $message .= $this->__('For more information logon to the PaymentPlatform Back-Office ('.$result['ERREUR'].')');
+            $order->addStatusHistoryComment($message);
+            $order->save();
+            return false;
+        }
+        
+        $message = $this->__('Recurring payment canceled.');
+        $order->addStatusHistoryComment($message);
+        $order->save();
+        return true;
+    }
 
     /**
      * Validate payment method information object
@@ -689,7 +715,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
             $txn = Mage::getModel('sales/order_payment_transaction');
             $txn->setOrderPaymentObject($order->getPayment());
             $txn->loadByTxnId($txnId);
-            if (!is_null($txn->getTxnId())) {
+            if (!is_null($txn->getTxnId()) && $txn->getIsClosed() == 1) {
                 return false;
             }
 
