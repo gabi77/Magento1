@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Paybox_Epayment>
-            <version>3.0.2</version>
+            <version>3.0.3</version>
         </Paybox_Epayment>
     </modules>
     <frontend>
@@ -187,7 +187,7 @@
             <cron_status>1</cron_status>
             <cron_time>10</cron_time>
             <cron_expression>*/15 * * * *</cron_expression>
-            <!-- 
+            <!--
             <kwixo>
                 <default_carrier_type>4</default_carrier_type>
                 <default_carrier_speed>2</default_carrier_speed>
