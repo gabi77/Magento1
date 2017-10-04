@@ -47,4 +47,10 @@ class Paybox_Epayment_Block_Redirect extends Mage_Page_Block_Html {
         return $paybox->checkUrls($urls);
     }
 
+    public function getResponsiveUrl() {
+        $paybox = Mage::getSingleton('pbxep/paybox');
+        $urls = $paybox->getConfig()->getResponsiveUrls();
+        return $paybox->checkUrls($urls);
+    }
+
 }

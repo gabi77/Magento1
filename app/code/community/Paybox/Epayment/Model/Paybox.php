@@ -413,6 +413,10 @@ class Paybox_Epayment_Model_Paybox {
             $values['PBX_SOURCE'] = 'XHTML';
         }
 
+        if($config->getResponsiveConfig() == 1){
+            $values['PBX_SOURCE'] = 'RWD';
+        }
+
         // Misc.
         $values['PBX_TIME'] = date('c');
         $values['PBX_HASH'] = strtoupper($config->getHmacAlgo());
