@@ -1,4 +1,11 @@
 # Change Log
+## [3.0.4] 2017-01-30
+### Ajouts
+- Moyens de paiement : ANCV, MasterPass, Illicado
+
+### Modifications
+- Code : nettoyage PSR-2
+
 ## [3.0.3] 2016-10-12
 ### Ajouts
 - Paiement : possibilité d'utiliser la page de paiement Paybox RWD
