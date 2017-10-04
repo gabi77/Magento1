@@ -523,6 +523,63 @@
                     </CREDIT>
                 </cards>
             </pbxep_kwixo_credit>
+            <pbxep_masterpass>
+                <active>0</active>
+                <model>pbxep/payment_masterpass</model>
+                <title>Paiement par Masterpass</title>
+                <allowspecific>0</allowspecific>
+                <action>immediate</action>
+                <status>
+                    <authorized>pbxep_authorized</authorized>
+                    <paid>pbxep_paid</paid>
+                </status>
+                <cards>
+                    <MASTERPASS>
+                        <label>Masterpass</label>
+                        <image>images/pbxep/masterpass.45.png</image>
+                        <payment>WALLET</payment>
+                        <card>MASTERPASS</card>
+                    </MASTERPASS>
+                </cards>
+            </pbxep_masterpass>
+            <pbxep_illicado>
+                <active>0</active>
+                <model>pbxep/payment_illicado</model>
+                <title>Paiement par Illicado</title>
+                <allowspecific>0</allowspecific>
+                <action>immediate</action>
+                <status>
+                    <authorized>pbxep_authorized</authorized>
+                    <paid>pbxep_paid</paid>
+                </status>
+                <cards>
+                    <ILLICADO>
+                        <label>Illicado</label>
+                        <image>images/pbxep/illicado.45.png</image>
+                        <payment>PREPAYEE</payment>
+                        <card>ILLICADO</card>
+                    </ILLICADO>
+                </cards>
+            </pbxep_illicado>
+            <pbxep_ancv>
+                <active>0</active>
+                <model>pbxep/payment_ancv</model>
+                <title>Paiement par Ancv</title>
+                <allowspecific>0</allowspecific>
+                <action>immediate</action>
+                <status>
+                    <authorized>pbxep_authorized</authorized>
+                    <paid>pbxep_paid</paid>
+                </status>
+                <cards>
+                    <ILLICADO>
+                        <label>Ancv</label>
+                        <image>images/pbxep/ancv.45.png</image>
+                        <payment>LIMONETIK</payment>
+                        <card>ANCV</card>
+                    </ILLICADO>
+                </cards>
+            </pbxep_ancv>
         </payment>
     </default>
 </config>
