@@ -582,6 +582,14 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     {
         $order = $payment->getOrder();
 
+        // Check if a different currency has been used
+        if ($order->getStoreToOrderRate() != 1) {
+            // In this case, convert amount with currency rate
+            $amount = $order->getStore()->roundPrice(
+                $amount*$order->getStoreToOrderRate()
+            );
+        }
+
         // Find capture transaction
         $collection = Mage::getModel('sales/order_payment_transaction')->getCollection()
                 ->setOrderFilter($order)
