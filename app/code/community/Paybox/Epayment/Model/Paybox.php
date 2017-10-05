@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.5
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -794,6 +794,21 @@ class Paybox_Epayment_Model_Paybox
     {
         $config = $this->getConfig();
         $urls = $config->getKwixoUrls();
+        if (empty($urls)) {
+            $message = 'Missing URL for Verifone e-commerce system in configuration';
+            $helper = Mage::helper('pbxep');
+            Mage::throwException($helper->__($message));
+        }
+
+        $url = $this->checkUrls($urls);
+
+        return $url;
+    }
+
+    public function getAncvUrl()
+    {
+        $config = $this->getConfig();
+        $urls = $config->getAncvUrls();
         if (empty($urls)) {
             $message = 'Missing URL for Verifone e-commerce system in configuration';
             $helper = Mage::helper('pbxep');

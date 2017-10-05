@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.5
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -62,6 +62,15 @@ class Paybox_Epayment_Model_Config
             ),
         ),
         'kwixo' => array(
+            'test' => array(
+                'https://preprod-tpeweb.paybox.com/php/'
+            ),
+            'production' => array(
+                'https://tpeweb.paybox.com/php/',
+                'https://tpeweb1.paybox.com/php/',
+            ),
+        ),
+        'ancv' => array(
             'test' => array(
                 'https://preprod-tpeweb.paybox.com/php/'
             ),
@@ -191,6 +200,11 @@ class Paybox_Epayment_Model_Config
     public function getKwixoUrls($environment = null)
     {
         return $this->_getUrls('kwixo', $environment);
+    }
+
+    public function getAncvUrls($environment = null)
+    {
+        return $this->_getUrls('ancv', $environment);
     }
 
     public function getMobileUrls($environment = null)

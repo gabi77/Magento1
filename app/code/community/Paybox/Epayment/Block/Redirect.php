@@ -14,7 +14,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.5
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -45,6 +45,13 @@ class Paybox_Epayment_Block_Redirect extends Mage_Page_Block_Html
     {
         $paybox = Mage::getSingleton('pbxep/paybox');
         $urls = $paybox->getConfig()->getKwixoUrls();
+        return $paybox->checkUrls($urls);
+    }
+
+    public function getAncvUrl()
+    {
+        $paybox = Mage::getSingleton('pbxep/paybox');
+        $urls = $paybox->getConfig()->getAncvUrls();
         return $paybox->checkUrls($urls);
     }
 
