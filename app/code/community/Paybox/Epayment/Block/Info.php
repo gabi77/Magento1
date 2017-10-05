@@ -10,14 +10,16 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info {
-
-    protected function _construct() {
+class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info
+{
+    protected function _construct()
+    {
         parent::_construct();
         $this->setTemplate('pbxep/info/default.phtml');
     }
 
-    public function getCreditCards() {
+    public function getCreditCards()
+    {
         $result = array();
         $cards = $this->getMethod()->getCards();
         $selected = explode(',', $this->getMethod()->getConfigData('cctypes'));
@@ -29,18 +31,21 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info {
         return $result;
     }
 
-    public function getPayboxData() {
+    public function getPayboxData()
+    {
         return unserialize($this->getInfo()->getPbxepAuthorization());
     }
 
     /**
      * @return Paybox_Epayment_Model_Config Paybox configuration object
      */
-    public function getPayboxConfig() {
+    public function getPayboxConfig()
+    {
         return Mage::getSingleton('pbxep/config');
     }
 
-    public function getCardImageUrl() {
+    public function getCardImageUrl()
+    {
         $data = $this->getPayboxData();
         $cards = $this->getCreditCards();
         if (isset($cards[$data['cardType']])) {
@@ -50,7 +55,8 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info {
         return $this->getSkinUrl('images/pbxep/'.strtolower($data['cardType']).'.45.png', array('_area' => 'frontend'));
     }
 
-    public function getCardImageLabel() {
+    public function getCardImageLabel()
+    {
         $data = $this->getPayboxData();
         $cards = $this->getCreditCards();
         if (!isset($cards[$data['cardType']])) {
@@ -60,13 +66,15 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info {
         return $card['label'];
     }
 
-    public function isAuthorized() {
+    public function isAuthorized()
+    {
         $info = $this->getInfo();
         $auth = $info->getPbxepAuthorization();
         return !empty($auth);
     }
 
-    public function canCapture() {
+    public function canCapture()
+    {
         $info = $this->getInfo();
         $capture = $info->getPbxepCapture();
         $config = $this->getPayboxConfig();
@@ -79,20 +87,21 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info {
         return false;
     }
 
-    public function canRefund() {
+    public function canRefund()
+    {
         $info = $this->getInfo();
         $config = $this->getPayboxConfig();
 
         $order = $info->getOrder();
         $method = $info->getOrder()->getPayment()->getMethodInstance();
-        if(!$method->getAllowRefund()){
+        if (!$method->getAllowRefund()) {
             return false;
         }
-        
+
         $action = $info->getPbxepAction();
-        if($action == 'three-time'){
+        if ($action == 'three-time') {
             $capture = $info->getPbxepFirstPayment();
-        }else{
+        } else {
             $capture = $info->getPbxepCapture();
         }
         if ($config->getSubscription() == Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER2 || $config->getSubscription() == Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER3) {
@@ -101,7 +110,8 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info {
         return false;
     }
 
-    public function getDebitTypeLabel() {
+    public function getDebitTypeLabel()
+    {
         $info = $this->getInfo();
         $action = $info->getPbxepAction();
         if (is_null($action) || ($action == 'three-time')) {
@@ -117,12 +127,14 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info {
         return $result;
     }
 
-    public function getShowInfoToCustomer() {
+    public function getShowInfoToCustomer()
+    {
         $config = $this->getPayboxConfig();
         return $config->getShowInfoToCustomer() != 0;
     }
 
-    public function getThreeTimeLabels() {
+    public function getThreeTimeLabels()
+    {
         $info = $this->getInfo();
         $action = $info->getPbxepAction();
         if (is_null($action) || ($action != 'three-time')) {
@@ -156,14 +168,16 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info {
         return $result;
     }
 
-    public function getPartialCaptureUrl() {
+    public function getPartialCaptureUrl()
+    {
         $info = $this->getInfo();
         return Mage::helper("adminhtml")->getUrl("*/sales_order_invoice/start", array(
                     'order_id' => $info->getOrder()->getId(),
         ));
     }
 
-    public function getCaptureUrl() {
+    public function getCaptureUrl()
+    {
         $data = $this->getPayboxData();
         $info = $this->getInfo();
         return Mage::helper("adminhtml")->getUrl("*/pbxep/invoice", array(
@@ -172,7 +186,8 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info {
         ));
     }
 
-    public function getRefundUrl() {
+    public function getRefundUrl()
+    {
         $info = $this->getInfo();
         $order = $info->getOrder();
         $invoices = $order->getInvoiceCollection();
@@ -186,30 +201,18 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info {
         }
         return null;
     }
-    
-    public function getRecurringDeleteUrl(){
+
+    public function getRecurringDeleteUrl()
+    {
         $data = $this->getPayboxData();
         $info = $this->getInfo();
         return Mage::helper("adminhtml")->getUrl("*/pbxep/recurring", array(
                     'order_id' => $info->getOrder()->getId(),
         ));
     }
-    
-    public function threeTimeClosed(){
-//        $info = $this->getInfo();
-//        $action = $info->getPbxepAction();
-//        if (is_null($action) || ($action != 'three-time')) {
-//            return null;
-//        }
-//        
-//        $data = $this->getPayboxData();
-//        var_dump($data);
-//        die();
-//        
-//        
-//        $txn = $this->getPayboxTransaction($payment, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE);
-        
 
+    public function threeTimeClosed()
+    {
         $info = $this->getInfo();
         $action = $info->getPbxepAction();
         if (is_null($action) || ($action != 'three-time')) {
@@ -218,5 +221,4 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info {
 
         return false;
     }
-
 }

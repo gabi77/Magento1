@@ -2,22 +2,33 @@
 /**
  * Paybox Epayment module for Magento
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * available at : http://opensource.org/licenses/osl-3.0.php
+ * Feel free to contact Paybox at support@paybox.com for any
+ * question.
  *
- * @package    Paybox_Epayment
- * @copyright  Copyright (c) 2013-2014 Paybox
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * LICENSE: This source file is subject to the version 3.0 of the Open
+ * Software License (OSL-3.0) that is available through the world-wide-web
+ * at the following URI: http://opensource.org/licenses/OSL-3.0. If
+ * you did not receive a copy of the OSL-3.0 license and are unable
+ * to obtain it through the web, please send a note to
+ * support@paybox.com so we can mail you a copy immediately.
+ *
+ *
+ * @version   3.0.4
+ * @author    BM Services <contact@bm-services.com>
+ * @copyright 2012-2017 Paybox
+ * @license   http://opensource.org/licenses/OSL-3.0
+ * @link      http://www.paybox.com/
  */
 
-class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Payment_Abstract {
-
+class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Payment_Abstract
+{
     protected $_code = 'pbxep_threetime';
     protected $_hasCctypes = true;
     protected $_allowRefund = true;
     protected $_3dsAllowed = true;
 
-    public function checkIpnParams(Mage_Sales_Model_Order $order, array $params) {
+    public function checkIpnParams(Mage_Sales_Model_Order $order, array $params)
+    {
         if (!isset($params['amount'])) {
             $message = $this->__('Missing amount parameter');
             $this->logFatal(sprintf('Order %s: (IPN) %s', $order->getIncrementId(), $message));
@@ -30,7 +41,8 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
         }
     }
 
-    public function onIPNSuccess(Mage_Sales_Model_Order $order, array $data) {
+    public function onIPNSuccess(Mage_Sales_Model_Order $order, array $data)
+    {
         $this->logDebug(sprintf('Order %s: Threetime IPN', $order->getIncrementId()));
 
         $payment = $order->getPayment();
@@ -82,8 +94,7 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
                 $order->addStatusHistoryComment($message);
             }
             $order->save();
-        
-        } else if (is_null($payment->getPbxepSecondPayment())) {
+        } elseif (is_null($payment->getPbxepSecondPayment())) {
             // Message
             $message = 'Second payment was captured by Paybox.';
             $order->addStatusHistoryComment($message);
@@ -93,7 +104,7 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
             $transaction = $this->_addPayboxDirectTransaction($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE, $data, true, array(), $txn);
             $transaction->save();
-        } else if (is_null($payment->getPbxepThirdPayment())) {
+        } elseif (is_null($payment->getPbxepThirdPayment())) {
             // Message
             $message = 'Third payment was captured by Paybox.';
             $order->addStatusHistoryComment($message);
@@ -101,18 +112,17 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             // Additional informations
             $payment->setPbxepThirdPayment(serialize($data));
             $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
-            
+
             $transaction = $this->_addPayboxDirectTransaction($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE, $data, true, array(), $txn);
             $transaction->save();
             $txn->closeCapture();
-        
         } else {
             $this->logDebug(sprintf('Order %s: Invalid three-time payment status', $order->getIncrementId()));
             Mage::throwException('Invalid three-time payment status');
         }
         $data['status'] = $message;
 
-        
+
         // Associate data to payment
         $payment->setPbxepAction('three-time');
 
@@ -126,8 +136,9 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
         // Client notification if needed
         $order->sendNewOrderEmail();
     }
-    
-    public function refund(Varien_Object $payment, $amount) {
+
+    public function refund(Varien_Object $payment, $amount)
+    {
         echo 'threetime refund';
         die();
         $order = $payment->getOrder();

@@ -2,28 +2,40 @@
 /**
  * Paybox Epayment module for Magento
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * available at : http://opensource.org/licenses/osl-3.0.php
+ * Feel free to contact Paybox at support@paybox.com for any
+ * question.
  *
- * @package    Paybox_Epayment
- * @copyright  Copyright (c) 2013-2014 Paybox
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * LICENSE: This source file is subject to the version 3.0 of the Open
+ * Software License (OSL-3.0) that is available through the world-wide-web
+ * at the following URI: http://opensource.org/licenses/OSL-3.0. If
+ * you did not receive a copy of the OSL-3.0 license and are unable
+ * to obtain it through the web, please send a note to
+ * support@paybox.com so we can mail you a copy immediately.
+ *
+ *
+ * @version   3.0.4
+ * @author    BM Services <contact@bm-services.com>
+ * @copyright 2012-2017 Paybox
+ * @license   http://opensource.org/licenses/OSL-3.0
+ * @link      http://www.paybox.com/
  */
 
-class Paybox_Epayment_Block_Admin_Field_Select extends Mage_Adminhtml_Block_System_Config_Form_Field {
-    protected function _getOptionHtmlAttributes() {
+class Paybox_Epayment_Block_Admin_Field_Select extends Mage_Adminhtml_Block_System_Config_Form_Field
+{
+    protected function _getOptionHtmlAttributes()
+    {
         return array('type', 'name', 'class', 'style', 'checked', 'onclick', 'onchange', 'disabled');
     }
 
-	protected function _optionToHtml($option, $selected) {
+    protected function _optionToHtml($option, $selected)
+    {
         if (is_array($option['value'])) {
             $html ='<optgroup label="'.$option['label'].'">'."\n";
             foreach ($option['value'] as $groupItem) {
                 $html .= $this->_optionToHtml($groupItem, $selected);
             }
             $html .='</optgroup>'."\n";
-        }
-        else {
+        } else {
             $html = '<option value="'.Mage::helper('core')->escapeHtml($option['value']).'"';
             $html.= isset($option['title']) ? 'title="'.Mage::helper('core')->escapeHtml($option['title']).'"' : '';
             $html.= isset($option['style']) ? 'style="'.$option['style'].'"' : '';
@@ -36,7 +48,8 @@ class Paybox_Epayment_Block_Admin_Field_Select extends Mage_Adminhtml_Block_Syst
         return $html;
     }
 
-    protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element) {
+    protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
+    {
         $element->addClass('select');
         $html = '<select id="'.$element->getHtmlId().'" name="'.
             $element->getName().'" '.
@@ -55,15 +68,13 @@ class Paybox_Epayment_Block_Admin_Field_Select extends Mage_Adminhtml_Block_Syst
                         'label' => $option),
                         $value
                     );
-                }
-                elseif (is_array($option['value'])) {
+                } elseif (is_array($option['value'])) {
                     $html.='<optgroup label="'.$option['label'].'">'."\n";
                     foreach ($option['value'] as $groupItem) {
                         $html.= $this->_optionToHtml($groupItem, $value);
                     }
                     $html.='</optgroup>'."\n";
-                }
-                else {
+                } else {
                     $html.= $this->_optionToHtml($option, $value);
                 }
             }
@@ -72,6 +83,5 @@ class Paybox_Epayment_Block_Admin_Field_Select extends Mage_Adminhtml_Block_Syst
         $html.= '</select>'."\n";
         $html.= $this->getAfterElementHtml();
         return $html;
-	}
-
+    }
 }

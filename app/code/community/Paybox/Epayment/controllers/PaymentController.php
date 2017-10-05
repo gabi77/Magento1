@@ -2,21 +2,33 @@
 /**
  * Paybox Epayment module for Magento
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * available at : http://opensource.org/licenses/osl-3.0.php
+ * Feel free to contact Paybox at support@paybox.com for any
+ * question.
  *
- * @package    Paybox_Epayment
- * @copyright  Copyright (c) 2013-2014 Paybox
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * LICENSE: This source file is subject to the version 3.0 of the Open
+ * Software License (OSL-3.0) that is available through the world-wide-web
+ * at the following URI: http://opensource.org/licenses/OSL-3.0. If
+ * you did not receive a copy of the OSL-3.0 license and are unable
+ * to obtain it through the web, please send a note to
+ * support@paybox.com so we can mail you a copy immediately.
+ *
+ *
+ * @version   3.0.4
+ * @author    BM Services <contact@bm-services.com>
+ * @copyright 2012-2017 Paybox
+ * @license   http://opensource.org/licenses/OSL-3.0
+ * @link      http://www.paybox.com/
  */
 
-class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Action {
-
-    private function _404() {
+class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Action
+{
+    private function _404()
+    {
         $this->_forward('defaultNoRoute');
     }
 
-    private function _loadQuoteFromOrder(Mage_Sales_Model_Order $order) {
+    private function _loadQuoteFromOrder(Mage_Sales_Model_Order $order)
+    {
         $quoteId = $order->getQuoteId();
 
         // Retrieves quote
@@ -29,7 +41,8 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
         return $quote;
     }
 
-    private function _getOrderFromParams(array $params) {
+    private function _getOrderFromParams(array $params)
+    {
         // Retrieves order
         $paybox = $this->getPaybox();
         $order = $paybox->untokenizeOrder($params['reference']);
@@ -39,7 +52,8 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
         return $order;
     }
 
-    public function cancelAction() {
+    public function cancelAction()
+    {
         try {
             $session = $this->getSession();
             $paybox = $this->getPaybox();
@@ -70,8 +84,7 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
 
             $message = $this->__('Payment canceled by user');
             $session->addError($message);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $this->logDebug(sprintf('cancelAction: %s', $e->getMessage()));
         }
 
@@ -79,7 +92,8 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
         $this->_redirect('checkout/cart');
     }
 
-    public function failedAction() {
+    public function failedAction()
+    {
         try {
             $session = $this->getSession();
             $paybox = $this->getPaybox();
@@ -110,8 +124,7 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
 
             $message = $this->__('Payment refused by Paybox');
             $session->addError($message);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $this->logDebug(sprintf('failureAction: %s', $e->getMessage()));
         }
 
@@ -119,19 +132,23 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
         $this->_redirect('checkout/cart');
     }
 
-    public function getConfig() {
+    public function getConfig()
+    {
         return Mage::getSingleton('pbxep/config');
     }
 
-    public function getPaybox() {
+    public function getPaybox()
+    {
         return Mage::getSingleton('pbxep/paybox');
     }
 
-    public function getSession() {
+    public function getSession()
+    {
         return Mage::getSingleton('checkout/session');
     }
 
-    public function ipnAction() {
+    public function ipnAction()
+    {
         try {
             $paybox = $this->getPaybox();
 
@@ -166,12 +183,10 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
 
             if ($res) {
                 echo 'Done.';
-            }
-            else {
+            } else {
                 echo 'Already done.';
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $message = sprintf('(IPN) Exception %s (%s %d).', $e->getMessage(), $e->getFile(), $e->getLine());
             $this->logFatal($message);
             header('Status: 500 Error', true, 500);
@@ -179,23 +194,28 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
         }
     }
 
-    public function logDebug($message) {
+    public function logDebug($message)
+    {
         Mage::log($message, Zend_Log::DEBUG, 'paybox-epayment.log');
     }
 
-    public function logWarning($message) {
+    public function logWarning($message)
+    {
         Mage::log($message, Zend_Log::WARN, 'paybox-epayment.log');
     }
 
-    public function logError($message) {
+    public function logError($message)
+    {
         Mage::log($message, Zend_Log::ERR, 'paybox-epayment.log');
     }
 
-    public function logFatal($message) {
+    public function logFatal($message)
+    {
         Mage::log($message, Zend_Log::ALERT, 'paybox-epayment.log');
     }
 
-    public function redirectAction() {
+    public function redirectAction()
+    {
         // Retrieves order id
         $session = $this->getSession();
         $orderId = $session->getLastRealOrderId();
@@ -244,7 +264,8 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
         $this->renderLayout();
     }
 
-    public function successAction() {
+    public function successAction()
+    {
         try {
             $session = $this->getSession();
             $paybox = $this->getPaybox();
@@ -273,8 +294,7 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
             // Redirect to success page
             $this->_redirect('checkout/onepage/success');
             return;
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $this->logDebug(sprintf('successAction: %s', $e->getMessage()));
         }
 

@@ -10,44 +10,49 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class Paybox_Epayment_Block_Checkout_Payment extends Mage_Payment_Block_Form_Cc {
-	protected function _construct() {
-		parent::_construct();
-		$this->setTemplate('pbxep/checkout-payment.phtml');
-	}
+class Paybox_Epayment_Block_Checkout_Payment extends Mage_Payment_Block_Form_Cc
+{
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->setTemplate('pbxep/checkout-payment.phtml');
+    }
 
-	protected function _prepareLayout() {
-		$head = $this->getLayout()->getBlock('head');
-		if (!empty($head)) {
-			$head->addCss('css/pbxep/styles.css');
-		}
-		return parent::_prepareLayout();
-	}
+    protected function _prepareLayout()
+    {
+        $head = $this->getLayout()->getBlock('head');
+        if (!empty($head)) {
+            $head->addCss('css/pbxep/styles.css');
+        }
+        return parent::_prepareLayout();
+    }
 
-	public function getCreditCards() {
-		$result = array();
-		$cards = $this->getMethod()->getCards();
-		$selected = explode(',', $this->getMethod()->getConfigData('cctypes'));
-		foreach ($cards as $code => $card) {
-			if (in_array($code, $selected)) {
-				$result[$code] = $card;
-			}
-		}
-		return $result;
-	}
+    public function getCreditCards()
+    {
+        $result = array();
+        $cards = $this->getMethod()->getCards();
+        $selected = explode(',', $this->getMethod()->getConfigData('cctypes'));
+        foreach ($cards as $code => $card) {
+            if (in_array($code, $selected)) {
+                $result[$code] = $card;
+            }
+        }
+        return $result;
+    }
 
-	public function getMethodLabelAfterHtml() {
-		$cards = $this->getCreditCards();
-		$html = array();
+    public function getMethodLabelAfterHtml()
+    {
+        $cards = $this->getCreditCards();
+        $html = array();
 
-		$path = 'payment/'.$this->getMethod()->getCode().'/cards';
-		$cards = Mage::getStoreConfig($path, $this->getMethod()->getStore());
-		foreach ($cards as $card) {
-			$url = $this->htmlEscape($this->getSkinUrl($card['image']));
-			$alt = $this->htmlEscape($card['label']);
-			$html[] = '<img class="pbxep-payment-logo" src="'.$url.'" alt="'.$alt.'"/>';
-		}
-		$html = '<span class="pbxep-payment-label">'.implode('&nbsp;', $html).'</span>';
-		return $html;
-	}
+        $path = 'payment/'.$this->getMethod()->getCode().'/cards';
+        $cards = Mage::getStoreConfig($path, $this->getMethod()->getStore());
+        foreach ($cards as $card) {
+            $url = $this->htmlEscape($this->getSkinUrl($card['image']));
+            $alt = $this->htmlEscape($card['label']);
+            $html[] = '<img class="pbxep-payment-logo" src="'.$url.'" alt="'.$alt.'"/>';
+        }
+        $html = '<span class="pbxep-payment-label">'.implode('&nbsp;', $html).'</span>';
+        return $html;
+    }
 }

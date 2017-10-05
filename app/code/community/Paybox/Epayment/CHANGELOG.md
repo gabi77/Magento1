@@ -1,4 +1,10 @@
 # Change Log
+## [3.0.5] 2017-10-03
+### Corrections
+- IPN : gestion IPN successifs pour paiement en 3 fois (sauvegarde de la commande pour mise à jour des informations)
+- Actions Back Office : gestion du multi-devise sur les remboursements
+- Cron nettoyage des commandes : correction de la requête SQL
+
 ## [3.0.4] 2017-01-30
 ### Ajouts
 - Moyens de paiement : ANCV, MasterPass, Illicado

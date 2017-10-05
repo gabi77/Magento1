@@ -1,26 +1,38 @@
 <?php
-
 /**
  * Paybox Epayment module for Magento
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * available at : http://opensource.org/licenses/osl-3.0.php
+ * Feel free to contact Paybox at support@paybox.com for any
+ * question.
  *
- * @package    Paybox_Epayment
- * @copyright  Copyright (c) 2013-2014 Paybox
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * LICENSE: This source file is subject to the version 3.0 of the Open
+ * Software License (OSL-3.0) that is available through the world-wide-web
+ * at the following URI: http://opensource.org/licenses/OSL-3.0. If
+ * you did not receive a copy of the OSL-3.0 license and are unable
+ * to obtain it through the web, please send a note to
+ * support@paybox.com so we can mail you a copy immediately.
+ *
+ *
+ * @version   3.0.4
+ * @author    BM Services <contact@bm-services.com>
+ * @copyright 2012-2017 Paybox
+ * @license   http://opensource.org/licenses/OSL-3.0
+ * @link      http://www.paybox.com/
  */
-class Paybox_Epayment_Model_Observer extends Mage_Core_Model_Observer {
+
+class Paybox_Epayment_Model_Observer extends Mage_Core_Model_Observer
+{
 
     /**
      * ajoute un bloc à la fin du bloc "content"
-     * 
+     *
      * utilise l'événement "controller_action_layout_load_before"
-     * 
+     *
      * @param Varien_Event_Observer $observer
      * @return \Paybox_Epayment_Model_Observer
      */
-    public function addBlockAtEndOfMainContent(Varien_Event_Observer $observer) {
+    public function addBlockAtEndOfMainContent(Varien_Event_Observer $observer)
+    {
         $event = $observer->getEvent();
         $data = $event->getData();
         $section = $data['action']->getRequest()->getParam('section', false);
@@ -31,23 +43,28 @@ class Paybox_Epayment_Model_Observer extends Mage_Core_Model_Observer {
         return $this;
     }
 
-    public function logDebug($message) {
+    public function logDebug($message)
+    {
         Mage::log($message, Zend_Log::DEBUG, 'paybox-epayment.log');
     }
 
-    public function logWarning($message) {
+    public function logWarning($message)
+    {
         Mage::log($message, Zend_Log::WARN, 'paybox-epayment.log');
     }
 
-    public function logError($message) {
+    public function logError($message)
+    {
         Mage::log($message, Zend_Log::ERR, 'paybox-epayment.log');
     }
 
-    public function logFatal($message) {
+    public function logFatal($message)
+    {
         Mage::log($message, Zend_Log::ALERT, 'paybox-epayment.log');
     }
 
-    public function onAfterOrderSave($observer) {
+    public function onAfterOrderSave($observer)
+    {
         // Find the order
         $order = $observer->getEvent()->getOrder();
         if (empty($order)) {
@@ -119,7 +136,8 @@ class Paybox_Epayment_Model_Observer extends Mage_Core_Model_Observer {
         return $this;
     }
 
-    public function cancelTask($observer) {
+    public function cancelTask($observer)
+    {
         $config = Mage::getSingleton('pbxep/config');
         $now = strtotime("-" . $config->getCronTime() . " minutes");
         $now = date('Y-m-d H:i:s', $now);
@@ -130,8 +148,6 @@ class Paybox_Epayment_Model_Observer extends Mage_Core_Model_Observer {
                 ->addFieldToFilter('`order_payment`.method', array('like' => "pbxep\_%"))
                 ->addFieldToFilter('`main_table`.status', 'pending')
                 ->addFieldToFilter('updated_at', array('lt' => $now));
-//        var_dump($orders->getSelect()->__toString());
-//        die();
         $count = 0;
         foreach ($orders as $order) {
             $orderModel = Mage::getModel('sales/order')->load($order->getData('orderId'));
@@ -154,10 +170,10 @@ class Paybox_Epayment_Model_Observer extends Mage_Core_Model_Observer {
         die();
     }
 
-    public function __($message) {
+    public function __($message)
+    {
         $helper = Mage::helper('pbxep');
         $args = func_get_args();
         return call_user_func_array(array($helper, '__'), $args);
     }
-
 }

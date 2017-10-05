@@ -1,17 +1,27 @@
 <?php
-
 /**
  * Paybox Epayment module for Magento
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * available at : http://opensource.org/licenses/osl-3.0.php
+ * Feel free to contact Paybox at support@paybox.com for any
+ * question.
  *
- * @package    Paybox_Epayment
- * @copyright  Copyright (c) 2013-2014 Paybox
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * LICENSE: This source file is subject to the version 3.0 of the Open
+ * Software License (OSL-3.0) that is available through the world-wide-web
+ * at the following URI: http://opensource.org/licenses/OSL-3.0. If
+ * you did not receive a copy of the OSL-3.0 license and are unable
+ * to obtain it through the web, please send a note to
+ * support@paybox.com so we can mail you a copy immediately.
+ *
+ *
+ * @version   3.0.4
+ * @author    BM Services <contact@bm-services.com>
+ * @copyright 2012-2017 Paybox
+ * @license   http://opensource.org/licenses/OSL-3.0
+ * @link      http://www.paybox.com/
  */
-abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model_Method_Abstract {
 
+abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model_Method_Abstract
+{
     const CALL_NUMBER = 'paybox_call_number';
     const TRANSACTION_NUMBER = 'paybox_transaction_number';
     const PBXACTION_DEFERRED = 'deferred';
@@ -46,7 +56,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     protected $_hasCctypes = false;
     protected $_processingTransaction = null;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $config = $this->getPayboxConfig();
         if ($config->getSubscription() == Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER2 || $config->getSubscription() == Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER3) {
@@ -64,14 +75,15 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     /**
      * Message translator helper
      */
-    public function __($message) {
+    public function __($message)
+    {
         $helper = Mage::helper('pbxep');
         $args = func_get_args();
         return call_user_func_array(array($helper, '__'), $args);
     }
 
     /**
-     * 
+     *
      * @param Mage_Sales_Model_Order $order
      * @param string $type
      * @param array $data
@@ -79,7 +91,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
      * @param array $infos
      * @return Mage_Sales_Model_Order_Payment_Transaction
      */
-    protected function _addPayboxTransaction(Mage_Sales_Model_Order $order, $type, array $data, $closed, array $infos = array()) {
+    protected function _addPayboxTransaction(Mage_Sales_Model_Order $order, $type, array $data, $closed, array $infos = array())
+    {
         $withCapture = $this->getConfigPaymentAction() != Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE;
 
         $payment = $order->getPayment();
@@ -111,7 +124,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     }
 
     /**
-     * 
+     *
      * @param Mage_Sales_Model_Order $order
      * @param string $type
      * @param array $data
@@ -119,7 +132,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
      * @param array $infos
      * @return Mage_Sales_Model_Order_Payment_Transaction
      */
-    protected function _addPayboxDirectTransaction(Mage_Sales_Model_Order $order, $type, array $data, $closed, array $infos, Mage_Sales_Model_Order_Payment_Transaction $parent) {
+    protected function _addPayboxDirectTransaction(Mage_Sales_Model_Order $order, $type, array $data, $closed, array $infos, Mage_Sales_Model_Order_Payment_Transaction $parent)
+    {
         $withCapture = $this->getConfigPaymentAction() != Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE;
 
         $payment = $order->getPayment();
@@ -145,12 +159,14 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     /**
      * Create transaction ID from Paybox data
      */
-    protected function _createTransactionId(array $payboxData) {
+    protected function _createTransactionId(array $payboxData)
+    {
         $call = (int) (isset($payboxData['transaction']) ? $payboxData['transaction'] : $payboxData['NUMTRANS']);
         return $call;
     }
 
-    public function getPayboxTransaction(Varien_Object $payment, $type, $openedOnly = false) {
+    public function getPayboxTransaction(Varien_Object $payment, $type, $openedOnly = false)
+    {
         $order = $payment->getOrder();
 
         // Find transaction
@@ -187,7 +203,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
      * @param   mixed $data
      * @return  Mage_Payment_Model_Info
      */
-    public function assignData($data) {
+    public function assignData($data)
+    {
         if (!($data instanceof Varien_Object)) {
             $data = new Varien_Object($data);
         }
@@ -203,7 +220,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
      *
      * @return Mage_Payment_Model_Abstract
      */
-    public function cancel(Varien_Object $payment) {
+    public function cancel(Varien_Object $payment)
+    {
         debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         $order = $payment->getOrder();
         $order->addStatusHistoryComment('Call to cancel()');
@@ -220,7 +238,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
      *
      * @return Mage_Payment_Model_Abstract
      */
-    public function capture(Varien_Object $payment, $amount) {
+    public function capture(Varien_Object $payment, $amount)
+    {
         $order = $payment->getOrder();
         $this->logDebug(sprintf('Order %s: Capture for %f', $order->getIncrementId(), $amount));
 
@@ -328,7 +347,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
      * @param Mage_Sales_Model_Order $order Order
      * @param array $params Parsed call parameters
      */
-    public function checkIpnParams(Mage_Sales_Model_Order $order, array $params) {
+    public function checkIpnParams(Mage_Sales_Model_Order $order, array $params)
+    {
         // Check required parameters
         $requiredParams = array('amount', 'transaction', 'error', 'reference', 'sign', 'date', 'time');
         foreach ($requiredParams as $requiredParam) {
@@ -340,54 +360,66 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         }
     }
 
-    public function getAllowDeferredDebit() {
+    public function getAllowDeferredDebit()
+    {
         return $this->_allowDeferredDebit;
     }
 
-    public function getAllowImmediatDebit() {
+    public function getAllowImmediatDebit()
+    {
         return $this->_allowImmediatDebit;
     }
 
-    public function getAllowManualDebit() {
+    public function getAllowManualDebit()
+    {
         return $this->_allowManualDebit;
     }
 
-    public function getAllowRefund() {
+    public function getAllowRefund()
+    {
         return $this->_allowRefund;
     }
 
-    public function getCards() {
+    public function getCards()
+    {
         return $this->getConfigData('cards');
     }
 
-    public function getConfigPaymentAction() {
+    public function getConfigPaymentAction()
+    {
         if ($this->getPayboxAction() == Paybox_Epayment_Model_Payment_Abstract::PBXACTION_MANUAL) {
             return Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE;
         }
         return Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE;
     }
 
-    public function getConfigAuthorizedStatus() {
+    public function getConfigAuthorizedStatus()
+    {
         return $this->getConfigData('status/authorized');
     }
 
-    public function getConfigPaidStatus() {
+    public function getConfigPaidStatus()
+    {
         return $this->getConfigData('status/paid');
     }
 
-    public function getConfigAutoCaptureStatus() {
+    public function getConfigAutoCaptureStatus()
+    {
         return $this->getConfigData('status/auto_capture');
     }
 
-    public function getHasCctypes() {
+    public function getHasCctypes()
+    {
         return $this->_hasCctypes;
     }
 
-    public function getOrderPlaceRedirectUrl() {
+    public function getOrderPlaceRedirectUrl()
+    {
         return Mage::getUrl('pbxep/payment/redirect', array('_secure' => true));
     }
 
-    public function getPayboxAction() {
+    public function getPayboxAction()
+    {
         $config = $this->getPayboxConfig();
         $action = $this->getConfigData('action');
         switch ($action) {
@@ -419,14 +451,16 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     /**
      * @return Paybox_Epayment_Model_Config Paybox configuration object
      */
-    public function getPayboxConfig() {
+    public function getPayboxConfig()
+    {
         return Mage::getSingleton('pbxep/config');
     }
 
     /**
      * @return Paybox_Epayment_Model_Config Paybox configuration object
      */
-    public function getPaybox() {
+    public function getPaybox()
+    {
         return Mage::getSingleton('pbxep/paybox');
     }
 
@@ -436,7 +470,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
      * @param Mage_Sales_Model_Quote|null $quote
      * @return bool
      */
-    public function isAvailable($quote = null) {
+    public function isAvailable($quote = null)
+    {
         if (parent::isAvailable($quote)) {
             if ($this->getHasCctypes()) {
                 $cctypes = $this->getConfigData('cctypes', ($quote ? $quote->getStoreId() : null));
@@ -454,7 +489,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
      * @param Mage_Sales_Model_Order $order
      * @return boolean
      */
-    public function is3DSEnabled(Mage_Sales_Model_Order $order) {
+    public function is3DSEnabled(Mage_Sales_Model_Order $order)
+    {
         // If 3DS is mandatory, answer is simple
         if ($this->_3dsMandatory) {
             return true;
@@ -485,23 +521,28 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         return false;
     }
 
-    public function logDebug($message) {
+    public function logDebug($message)
+    {
         Mage::log($message, Zend_Log::DEBUG, 'paybox-epayment.log');
     }
 
-    public function logWarning($message) {
+    public function logWarning($message)
+    {
         Mage::log($message, Zend_Log::WARN, 'paybox-epayment.log');
     }
 
-    public function logError($message) {
+    public function logError($message)
+    {
         Mage::log($message, Zend_Log::ERR, 'paybox-epayment.log');
     }
 
-    public function logFatal($message) {
+    public function logFatal($message)
+    {
         Mage::log($message, Zend_Log::ALERT, 'paybox-epayment.log');
     }
 
-    public function makeCapture(Mage_Sales_Model_Order $order) {
+    public function makeCapture(Mage_Sales_Model_Order $order)
+    {
         $payment = $order->getPayment();
         $txn = $this->getPayboxTransaction($payment, Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH, true);
 
@@ -537,7 +578,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
      *
      * @return Mage_Payment_Model_Abstract
      */
-    public function refund(Varien_Object $payment, $amount) {
+    public function refund(Varien_Object $payment, $amount)
+    {
         $order = $payment->getOrder();
 
         // Find capture transaction
@@ -588,7 +630,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
 
         return $this;
     }
-    
+
     /**
      * Refund specified amount for payment
      *
@@ -599,7 +641,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         $this->logDebug(sprintf('Order %s: Cancel recurring payment - calling directRecurringDelete', $order->getIncrementId()));
         $result = $paybox->directRecurringDelete($order);
         $this->logDebug(sprintf('Order %s: Cancel recurring payment - response code %s', $order->getIncrementId(), $result['ERREUR']));
-        
+
         // Check answer
         if ($result['ACQ'] != 'OK') {
             $message = $this->__('Unable to cancel recurring payment.')."\r\n";
@@ -608,7 +650,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
             $order->save();
             return false;
         }
-        
+
         $message = $this->__('Recurring payment canceled.');
         $order->addStatusHistoryComment($message);
         $order->save();
@@ -620,7 +662,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
      *
      * @return  Mage_Payment_Model_Abstract
      */
-    public function validate() {
+    public function validate()
+    {
         parent::validate();
 
         if ($this->getHasCctypes()) {
@@ -645,7 +688,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     /**
      * When the visitor come back from Paybox using the cancel URL
      */
-    public function onPaymentCanceled(Mage_Sales_Model_Order $order) {
+    public function onPaymentCanceled(Mage_Sales_Model_Order $order)
+    {
         $config = $this->getPayboxConfig();
         if (!$config->isCronCancelIsActive()) {//If cron is not active, we cancel the order
             // Cancel order
@@ -664,7 +708,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     /**
      * When the visitor come back from Paybox using the failure URL
      */
-    public function onPaymentFailed(Mage_Sales_Model_Order $order) {
+    public function onPaymentFailed(Mage_Sales_Model_Order $order)
+    {
         // Message
         $message = 'Customer is back from Paybox payment page.';
         $message = $this->__($message);
@@ -676,7 +721,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     /**
      * When the visitor is redirected to Paybox
      */
-    public function onPaymentRedirect(Mage_Sales_Model_Order $order) {
+    public function onPaymentRedirect(Mage_Sales_Model_Order $order)
+    {
         $info = $this->getInfoInstance();
         $info->setPbxepPaymentAction($this->getConfigPaymentAction());
         $info->setPbxepPayboxAction($this->getPayboxAction());
@@ -693,7 +739,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     /**
      * When the visitor come back from Paybox using the success URL
      */
-    public function onPaymentSuccess(Mage_Sales_Model_Order $order, array $data) {
+    public function onPaymentSuccess(Mage_Sales_Model_Order $order, array $data)
+    {
         // Message
         $message = 'Customer is back from Paybox payment page.';
         $message = $this->__($message);
@@ -705,7 +752,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     /**
      * When the IPN is called
      */
-    public function onIPNCalled(Mage_Sales_Model_Order $order, array $params) {
+    public function onIPNCalled(Mage_Sales_Model_Order $order, array $params)
+    {
         try {
             // Check parameters
             $this->checkIpnParams($order, $params);
@@ -739,7 +787,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     /**
      * When an error has occured in the IPN handler
      */
-    public function onIPNError(Mage_Sales_Model_Order $order, array $data, Exception $e = null) {
+    public function onIPNError(Mage_Sales_Model_Order $order, array $data, Exception $e = null)
+    {
         $withCapture = $this->getConfigPaymentAction() != Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE;
 
         // Message
@@ -754,7 +803,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
 
         // Transaction
         if (is_null($this->_processingTransaction)) {
-//            $type = $withCapture ?
+            //            $type = $withCapture ?
 //                    Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE :
 //                    Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH;
             $type = Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID;
@@ -769,7 +818,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     /**
      * When the IPN is called to refuse a payment
      */
-    public function onIPNFailed(Mage_Sales_Model_Order $order, array $data) {
+    public function onIPNFailed(Mage_Sales_Model_Order $order, array $data)
+    {
         $withCapture = $this->getConfigPaymentAction() != Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE;
 
         // Message
@@ -793,7 +843,8 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     /**
      * When the IPN is called to validate a payment
      */
-    public function onIPNSuccess(Mage_Sales_Model_Order $order, array $data) {
+    public function onIPNSuccess(Mage_Sales_Model_Order $order, array $data)
+    {
         $this->logDebug(sprintf('Order %s: Standard IPN', $order->getIncrementId()));
 
         $payment = $order->getPayment();
@@ -859,12 +910,13 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     }
 
     /**
-     * 
+     *
      * @param Mage_Sales_Model_Order $order
      * @param Mage_Sales_Model_Order_Payment_Transaction $txn
      * @return Mage_Sales_Model_Order_Invoice
      */
-    protected function _createInvoice($order, $txn) {
+    protected function _createInvoice($order, $txn)
+    {
         $invoice = $order->prepareInvoice();
         $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE);
         $invoice->setTransactionId($txn->getTransactionId());
@@ -874,5 +926,4 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         $invoice->sendEmail();
         return $invoice;
     }
-
 }
