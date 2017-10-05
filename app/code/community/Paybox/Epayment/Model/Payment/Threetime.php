@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.5
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -96,7 +96,7 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             $order->save();
         } elseif (is_null($payment->getPbxepSecondPayment())) {
             // Message
-            $message = 'Second payment was captured by Verifone e-commerce.';
+            $message = $this->__('Second payment was captured by Verifone e-commerce.');
             $order->addStatusHistoryComment($message);
 
             // Additional informations
@@ -104,9 +104,10 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
             $transaction = $this->_addPayboxDirectTransaction($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE, $data, true, array(), $txn);
             $transaction->save();
+            $order->save();
         } elseif (is_null($payment->getPbxepThirdPayment())) {
             // Message
-            $message = 'Third payment was captured by Verifone e-commerce.';
+            $message = $this->__('Third payment was captured by Verifone e-commerce.');
             $order->addStatusHistoryComment($message);
 
             // Additional informations
@@ -116,6 +117,7 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             $transaction = $this->_addPayboxDirectTransaction($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE, $data, true, array(), $txn);
             $transaction->save();
             $txn->closeCapture();
+            $order->save();
         } else {
             $this->logDebug(sprintf('Order %s: Invalid three-time payment status', $order->getIncrementId()));
             Mage::throwException('Invalid three-time payment status');
