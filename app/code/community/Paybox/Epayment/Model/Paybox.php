@@ -421,6 +421,7 @@ class Paybox_Epayment_Model_Paybox
         $lang = $languages[$lang];
         $values['PBX_LANGUE'] = $lang;
 
+        $values['PBX_SOURCE'] = '';
         // Choose page format depending on browser/devise
         if (Mage::helper('pbxep/mobile')->isMobile()) {
             $values['PBX_SOURCE'] = 'XHTML';
