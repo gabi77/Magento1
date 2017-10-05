@@ -1,8 +1,8 @@
 <?php
 /**
- * Paybox Epayment module for Magento
+ * Verifone e-commerce Epayment module for Magento
  *
- * Feel free to contact Paybox at support@paybox.com for any
+ * Feel free to contact Verifone e-commerce at support@paybox.com for any
  * question.
  *
  * LICENSE: This source file is subject to the version 3.0 of the Open
@@ -15,7 +15,7 @@
  *
  * @version   3.0.4
  * @author    BM Services <contact@bm-services.com>
- * @copyright 2012-2017 Paybox
+ * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
  * @link      http://www.paybox.com/
  */
@@ -60,7 +60,7 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             $this->logDebug(sprintf('Order %s: First payment', $order->getIncrementId()));
 
             // Message
-            $message = 'Payment was authorized and captured by Paybox.';
+            $message = 'Payment was authorized and captured by Verifone e-commerce.';
 
             // Status
             $status = $this->getConfigPaidStatus();
@@ -96,7 +96,7 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             $order->save();
         } elseif (is_null($payment->getPbxepSecondPayment())) {
             // Message
-            $message = 'Second payment was captured by Paybox.';
+            $message = 'Second payment was captured by Verifone e-commerce.';
             $order->addStatusHistoryComment($message);
 
             // Additional informations
@@ -106,7 +106,7 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             $transaction->save();
         } elseif (is_null($payment->getPbxepThirdPayment())) {
             // Message
-            $message = 'Third payment was captured by Paybox.';
+            $message = 'Third payment was captured by Verifone e-commerce.';
             $order->addStatusHistoryComment($message);
 
             // Additional informations
@@ -161,15 +161,15 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             Mage::throwException('Payment was not fully captured. Unable to refund.');
         }
 
-        // Call Paybox Direct
+        // Call Verifone e-commerce Direct
         $connector = $this->getPaybox();
         $data = $connector->directRefund((float) $amount, $order, $txn);
 
         // Message
         if ($data['CODEREPONSE'] == '00000') {
-            $message = 'Payment was refund by Paybox.';
+            $message = 'Payment was refund by Verifone e-commerce.';
         } else {
-            $message = 'Paybox direct error (' . $data['CODEREPONSE'] . ': ' . $data['COMMENTAIRE'] . ')';
+            $message = 'Verifone e-commerce direct error (' . $data['CODEREPONSE'] . ': ' . $data['COMMENTAIRE'] . ')';
         }
         $data['status'] = $message;
         $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
@@ -181,7 +181,7 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
         // Avoid automatic transaction creation
         $payment->setSkipTransactionCreation(true);
 
-        // If Paybox returned an error, throw an exception
+        // If Verifone e-commerce returned an error, throw an exception
         if ($data['CODEREPONSE'] != '00000') {
             Mage::throwException($message);
         }

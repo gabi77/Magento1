@@ -14,7 +14,7 @@
 
 ## [3.0.3] 2016-10-12
 ### Ajouts
-- Paiement : possibilité d'utiliser la page de paiement Paybox RWD
+- Paiement : possibilité d'utiliser la page de paiement Verifone e-commerce RWD
 - Back Office : actions d'annulation des paiements en 3 fois
 
 ### Modifications
@@ -27,7 +27,7 @@
 
 ## [3.0.1] 2016-07-29
 ### Ajouts
-- Paiement : ajout du paramètre de version pour suivi des transactions par Paybox
+- Paiement : ajout du paramètre de version pour suivi des transactions par Verifone e-commerce
 
 ### Corrections
 - IPN : mise en conformité des paramètres "Call number" / "Transaction"

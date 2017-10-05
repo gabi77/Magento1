@@ -1,8 +1,8 @@
 <?php
 /**
- * Paybox Epayment module for Magento
+ * Verifone e-commerce Epayment module for Magento
  *
- * Feel free to contact Paybox at support@paybox.com for any
+ * Feel free to contact Verifone e-commerce at support@paybox.com for any
  * question.
  *
  * LICENSE: This source file is subject to the version 3.0 of the Open
@@ -15,7 +15,7 @@
  *
  * @version   3.0.4
  * @author    BM Services <contact@bm-services.com>
- * @copyright 2012-2017 Paybox
+ * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
  * @link      http://www.paybox.com/
  */
@@ -79,7 +79,7 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
             // Cleanup
             $session->unsCurrentPbxepOrderId();
 
-            $message = sprintf('Order %d: Payment was canceled by user on Paybox payment page.', $order->getIncrementId());
+            $message = sprintf('Order %d: Payment was canceled by user on Verifone e-commerce payment page.', $order->getIncrementId());
             $this->logDebug($message);
 
             $message = $this->__('Payment canceled by user');
@@ -119,10 +119,10 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
             // Cleanup
             $session->unsCurrentPbxepOrderId();
 
-            $message = sprintf('Order %d: Customer is back from Paybox payment page. Payment refused by Paybox (%d).', $order->getIncrementId(), $params['error']);
+            $message = sprintf('Order %d: Customer is back from Verifone e-commerce payment page. Payment refused by Verifone e-commerce (%d).', $order->getIncrementId(), $params['error']);
             $this->logDebug($message);
 
-            $message = $this->__('Payment refused by Paybox');
+            $message = $this->__('Payment refused by Verifone e-commerce');
             $session->addError($message);
         } catch (Exception $e) {
             $this->logDebug(sprintf('failureAction: %s', $e->getMessage()));
@@ -288,7 +288,7 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
             // Cleanup
             $session->unsCurrentPbxepOrderId();
 
-            $message = sprintf('Order %s: Customer is back from Paybox payment page. Payment success.', $order->getIncrementId());
+            $message = sprintf('Order %s: Customer is back from Verifone e-commerce payment page. Payment success.', $order->getIncrementId());
             $this->logDebug($message);
 
             // Redirect to success page

@@ -1,6 +1,6 @@
-# Paybox - Magento 1
+# Verifone e-commerce - Magento 1
 
-Extension Magento1 pour la solution de paiement Paybox
+Extension Magento1 pour la solution de paiement Verifone e-commerce
 
 ## A propos
 
@@ -12,6 +12,6 @@ En une seule intégration, offrez plusieurs méthodes de paiement, bénéficiez 
 
 ## Configuration
 
-Le paramétrage par défaut correpond à l'environnement de test Paybox où tous les modes de paiement sont disponibles et où toutes les cartes sont activables, aucun paiement réel ne sera effectué.
+Le paramétrage par défaut correpond à l'environnement de test Verifone e-commerce où tous les modes de paiement sont disponibles et où toutes les cartes sont activables, aucun paiement réel ne sera effectué.
 
-Pour utiliser le module en réel en environnement de production, vous devez avoir souscrit un contrat auprès de Paybox, disposer de vos identifiants, configurer les options, modes de paiement et cartes en fonction de votre contrat.
+Pour utiliser le module en réel en environnement de production, vous devez avoir souscrit un contrat auprès de Verifone e-commerce, disposer de vos identifiants, configurer les options, modes de paiement et cartes en fonction de votre contrat.

@@ -1,8 +1,8 @@
 <?php
 /**
- * Paybox Epayment module for Magento
+ * Verifone e-commerce Epayment module for Magento
  *
- * Feel free to contact Paybox at support@paybox.com for any
+ * Feel free to contact Verifone e-commerce at support@paybox.com for any
  * question.
  *
  * LICENSE: This source file is subject to the version 3.0 of the Open
@@ -15,7 +15,7 @@
  *
  * @version   3.0.4
  * @author    BM Services <contact@bm-services.com>
- * @copyright 2012-2017 Paybox
+ * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
  * @link      http://www.paybox.com/
  */
@@ -71,7 +71,7 @@ class Paybox_Epayment_Model_Observer extends Mage_Core_Model_Observer
             return $this;
         }
 
-        // This order must be paid by Paybox
+        // This order must be paid by Verifone e-commerce
         $payment = $order->getPayment();
         if (empty($payment)) {
             return $this;
@@ -81,7 +81,7 @@ class Paybox_Epayment_Model_Observer extends Mage_Core_Model_Observer
             return $this;
         }
 
-        // Paybox Direct must be activated
+        // Verifone e-commerce Direct must be activated
         $config = $method->getPayboxConfig();
         if ($config->getSubscription() != Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER2 && $config->getSubscription() != Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER3) {
             return $this;
@@ -126,7 +126,7 @@ class Paybox_Epayment_Model_Observer extends Mage_Core_Model_Observer
         }
 
         if (!$result) {
-            $message = 'Automatic Paybox payment capture failed: %s.';
+            $message = 'Automatic Verifone e-commerce payment capture failed: %s.';
             $message = $method->__($message, $error);
             $this->logDebug(sprintf('Order %s: Automatic capture - %s', $order->getIncrementId(), $message));
             $status = $order->addStatusHistoryComment($message);
@@ -152,7 +152,7 @@ class Paybox_Epayment_Model_Observer extends Mage_Core_Model_Observer
         foreach ($orders as $order) {
             $orderModel = Mage::getModel('sales/order')->load($order->getData('orderId'));
             try {
-                $message = sprintf('Payment was canceled by Paybox Cron: %s', $orderModel->getIncrementId());
+                $message = sprintf('Payment was canceled by Verifone e-commerce Cron: %s', $orderModel->getIncrementId());
                 $orderModel->cancel();
                 $history = $orderModel->addStatusHistoryComment($message);
                 $history->setIsCustomerNotified(false);

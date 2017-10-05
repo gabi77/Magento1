@@ -1,8 +1,8 @@
 <?php
 /**
- * Paybox Epayment module for Magento
+ * Verifone e-commerce Epayment module for Magento
  *
- * Feel free to contact Paybox at support@paybox.com for any
+ * Feel free to contact Verifone e-commerce at support@paybox.com for any
  * question.
  *
  * LICENSE: This source file is subject to the version 3.0 of the Open
@@ -15,7 +15,7 @@
  *
  * @version   3.0.4
  * @author    BM Services <contact@bm-services.com>
- * @copyright 2012-2017 Paybox
+ * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
  * @link      http://www.paybox.com/
  */
@@ -45,7 +45,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     protected $_infoBlockType = 'pbxep/info';
 
     /**
-     * Paybox specific options
+     * Verifone e-commerce specific options
      */
     protected $_3dsAllowed = false;
     protected $_3dsMandatory = false;
@@ -157,7 +157,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     }
 
     /**
-     * Create transaction ID from Paybox data
+     * Create transaction ID from Verifone e-commerce data
      */
     protected function _createTransactionId(array $payboxData)
     {
@@ -273,7 +273,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
             // Find capture transaction
             $txn = $this->getPayboxTransaction($payment, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE);
             if (!is_null($txn)) {
-                // Find Paybox data
+                // Find Verifone e-commerce data
                 $trxData = $txn->getAdditionalInformation(Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS);
                 if (!is_array($trxData)) {
                     Mage::throwException('No transaction found.');
@@ -294,7 +294,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
 
         $this->logDebug(sprintf('Order %s: Capture - transaction %d', $order->getIncrementId(), $txn->getTransactionId()));
 
-        // Call Paybox Direct
+        // Call Verifone e-commerce Direct
         $paybox = $this->getPaybox();
         $this->logDebug(sprintf('Order %s: Capture - calling directCapture with amount of %f', $order->getIncrementId(), $amount));
         $data = $paybox->directCapture($amount, $order, $txn);
@@ -302,10 +302,10 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
 
         // Message
         if ($data['CODEREPONSE'] == '00000') {
-            $message = 'Payment was captured by Paybox.';
+            $message = 'Payment was captured by Verifone e-commerce.';
             $close = true;
         } else {
-            $message = 'Paybox direct error (' . $data['CODEREPONSE'] . ': ' . $data['COMMENTAIRE'] . ')';
+            $message = 'Verifone e-commerce direct error (' . $data['CODEREPONSE'] . ': ' . $data['COMMENTAIRE'] . ')';
             $close = false;
         }
         $data['status'] = $message;
@@ -327,7 +327,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         $payment->setSkipTransactionCreation(true);
         $payment->save();
 
-        // If Paybox returned an error, throw an exception
+        // If Verifone e-commerce returned an error, throw an exception
         if ($data['CODEREPONSE'] != '00000') {
             Mage::throwException($message);
         }
@@ -343,7 +343,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     }
 
     /**
-     * Checks parameter send by Paybox to IPN.
+     * Checks parameter send by Verifone e-commerce to IPN.
      * @param Mage_Sales_Model_Order $order Order
      * @param array $params Parsed call parameters
      */
@@ -353,7 +353,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         $requiredParams = array('amount', 'transaction', 'error', 'reference', 'sign', 'date', 'time');
         foreach ($requiredParams as $requiredParam) {
             if (!isset($params[$requiredParam])) {
-                $message = $this->__('Missing ' . $requiredParam . ' parameter in Paybox call');
+                $message = $this->__('Missing ' . $requiredParam . ' parameter in Verifone e-commerce call');
                 $this->logFatal(sprintf('Order %s: (IPN) %s', $order->getIncrementId(), $message));
                 Mage::throwException($message);
             }
@@ -449,7 +449,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     }
 
     /**
-     * @return Paybox_Epayment_Model_Config Paybox configuration object
+     * @return Paybox_Epayment_Model_Config Verifone e-commerce configuration object
      */
     public function getPayboxConfig()
     {
@@ -457,7 +457,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     }
 
     /**
-     * @return Paybox_Epayment_Model_Config Paybox configuration object
+     * @return Paybox_Epayment_Model_Config Verifone e-commerce configuration object
      */
     public function getPaybox()
     {
@@ -600,15 +600,15 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
             Mage::throwException('Payment was not fully captured. Unable to refund.');
         }
 
-        // Call Paybox Direct
+        // Call Verifone e-commerce Direct
         $connector = $this->getPaybox();
         $data = $connector->directRefund((float) $amount, $order, $txn);
 
         // Message
         if ($data['CODEREPONSE'] == '00000') {
-            $message = 'Payment was refund by Paybox.';
+            $message = 'Payment was refund by Verifone e-commerce.';
         } else {
-            $message = 'Paybox direct error (' . $data['CODEREPONSE'] . ': ' . $data['COMMENTAIRE'] . ')';
+            $message = 'Verifone e-commerce direct error (' . $data['CODEREPONSE'] . ': ' . $data['COMMENTAIRE'] . ')';
         }
         $data['status'] = $message;
         $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
@@ -620,7 +620,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         // Avoid automatic transaction creation
         $payment->setSkipTransactionCreation(true);
 
-        // If Paybox returned an error, throw an exception
+        // If Verifone e-commerce returned an error, throw an exception
         if ($data['CODEREPONSE'] != '00000') {
             Mage::throwException($message);
         }
@@ -686,7 +686,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     }
 
     /**
-     * When the visitor come back from Paybox using the cancel URL
+     * When the visitor come back from Verifone e-commerce using the cancel URL
      */
     public function onPaymentCanceled(Mage_Sales_Model_Order $order)
     {
@@ -695,7 +695,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
             // Cancel order
             $order->cancel();
             // Add a message
-            $message = 'Payment was canceled by user on Paybox payment page.';
+            $message = 'Payment was canceled by user on Verifone e-commerce payment page.';
             $message = $this->__($message);
             $status = $order->addStatusHistoryComment($message);
 
@@ -706,12 +706,12 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     }
 
     /**
-     * When the visitor come back from Paybox using the failure URL
+     * When the visitor come back from Verifone e-commerce using the failure URL
      */
     public function onPaymentFailed(Mage_Sales_Model_Order $order)
     {
         // Message
-        $message = 'Customer is back from Paybox payment page.';
+        $message = 'Customer is back from Verifone e-commerce payment page.';
         $message = $this->__($message);
         $status = $order->addStatusHistoryComment($message);
 
@@ -719,7 +719,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     }
 
     /**
-     * When the visitor is redirected to Paybox
+     * When the visitor is redirected to Verifone e-commerce
      */
     public function onPaymentRedirect(Mage_Sales_Model_Order $order)
     {
@@ -728,7 +728,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         $info->setPbxepPayboxAction($this->getPayboxAction());
         $info->save();
         // Keep track of this redirection in order history
-        $message = 'Redirecting customer to Paybox payment page.';
+        $message = 'Redirecting customer to Verifone e-commerce payment page.';
         $status = $order->addStatusHistoryComment($this->__($message));
 
         $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
@@ -737,12 +737,12 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     }
 
     /**
-     * When the visitor come back from Paybox using the success URL
+     * When the visitor come back from Verifone e-commerce using the success URL
      */
     public function onPaymentSuccess(Mage_Sales_Model_Order $order, array $data)
     {
         // Message
-        $message = 'Customer is back from Paybox payment page.';
+        $message = 'Customer is back from Verifone e-commerce payment page.';
         $message = $this->__($message);
         $status = $order->addStatusHistoryComment($message);
 
@@ -792,7 +792,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         $withCapture = $this->getConfigPaymentAction() != Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE;
 
         // Message
-        $message = 'An unexpected error have occured while processing Paybox payment (%s).';
+        $message = 'An unexpected error have occured while processing Verifone e-commerce payment (%s).';
         $error = is_null($e) ? 'unknown error' : $e->getMessage();
         $error = $this->__($error);
         $message = $this->__($message, $error);
@@ -823,7 +823,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         $withCapture = $this->getConfigPaymentAction() != Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE;
 
         // Message
-        $message = 'Payment was refused by Paybox (%s).';
+        $message = 'Payment was refused by Verifone e-commerce (%s).';
         $error = $this->getPaybox()->toErrorMessage($data['error']);
         $message = $this->__($message, $error);
         $data['status'] = $message;
@@ -853,7 +853,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
 
         // Message
         if ($withCapture) {
-            $message = 'Payment was authorized and captured by Paybox.';
+            $message = 'Payment was authorized and captured by Verifone e-commerce.';
             $status = $this->getConfigPaidStatus();
             $state = Mage_Sales_Model_Order::STATE_PROCESSING;
             $allowedStates = array(
@@ -862,7 +862,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
                 Mage_Sales_Model_Order::STATE_PROCESSING,
             );
         } else {
-            $message = 'Payment was authorized by Paybox.';
+            $message = 'Payment was authorized by Verifone e-commerce.';
             $status = $this->getConfigAuthorizedStatus();
             $state = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
             $allowedStates = array(

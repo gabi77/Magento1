@@ -1,8 +1,8 @@
 <?php
 /**
- * Paybox Epayment module for Magento
+ * Verifone e-commerce Epayment module for Magento
  *
- * Feel free to contact Paybox at support@paybox.com for any
+ * Feel free to contact Verifone e-commerce at support@paybox.com for any
  * question.
  *
  * LICENSE: This source file is subject to the version 3.0 of the Open
@@ -15,7 +15,7 @@
  *
  * @version   3.0.4
  * @author    BM Services <contact@bm-services.com>
- * @copyright 2012-2017 Paybox
+ * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
  * @link      http://www.paybox.com/
  */
@@ -299,7 +299,7 @@ class Paybox_Epayment_Model_Paybox
         // Init client
         $clt = new Varien_Http_Client($url, array(
             'maxredirects' => 0,
-            'useragent' => 'Magento Paybox module',
+            'useragent' => 'Magento Verifone e-commerce module',
             'timeout' => 5,
             ));
         $clt->setMethod(Varien_Http_Client::POST);
@@ -316,7 +316,7 @@ class Paybox_Epayment_Model_Paybox
         }
 
         // Here, there's a problem
-        Mage::throwException(Mage::helper('pbxep')->__('Paybox not available. Please try again later.'));
+        Mage::throwException(Mage::helper('pbxep')->__('Verifone e-commerce not available. Please try again later.'));
     }
 
     public function buildSystemParams(Mage_Sales_Model_Order $order, Paybox_Epayment_Model_Payment_Abstract $payment)
@@ -506,7 +506,7 @@ class Paybox_Epayment_Model_Paybox
         // Init client
         $client = new Varien_Http_Client(null, array(
             'maxredirects' => 0,
-            'useragent' => 'Magento Paybox module',
+            'useragent' => 'Magento Verifone e-commerce module',
             'timeout' => 5,
             ));
         $client->setMethod(Varien_Http_Client::GET);
@@ -527,7 +527,7 @@ class Paybox_Epayment_Model_Paybox
         }
 
         // Here, there's a problem
-        throw new Exception(Mage::helper('pbxep')->__('Paybox not available. Please try again later.'));
+        throw new Exception(Mage::helper('pbxep')->__('Verifone e-commerce not available. Please try again later.'));
     }
 
     public function computeThreetimePayments($orderAmount, $amountScale)
@@ -566,7 +566,7 @@ class Paybox_Epayment_Model_Paybox
     }
 
     /**
-     * Create transaction ID from Paybox data
+     * Create transaction ID from Verifone e-commerce data
      */
     protected function createTransactionId(array $payboxData)
     {
@@ -599,7 +599,7 @@ class Paybox_Epayment_Model_Paybox
         // Init client
         $clt = new Varien_Http_Client($url, array(
             'maxredirects' => 0,
-            'useragent' => 'Magento Paybox module',
+            'useragent' => 'Magento Verifone e-commerce module',
             'timeout' => 5,
             ));
         $clt->setMethod(Varien_Http_Client::POST);
@@ -620,7 +620,7 @@ class Paybox_Epayment_Model_Paybox
         }
 
         // Here, there's a problem
-        Mage::throwException(Mage::helper('pbxep')->__('Paybox not available. Please try again later.'));
+        Mage::throwException(Mage::helper('pbxep')->__('Verifone e-commerce not available. Please try again later.'));
     }
 
     public function decodeChunkedBody($body)
@@ -673,7 +673,7 @@ class Paybox_Epayment_Model_Paybox
     }
 
     /**
-     * @return Paybox_Epayment_Model_Config Paybox configuration object
+     * @return Paybox_Epayment_Model_Config Verifone e-commerce configuration object
      */
     public function getConfig()
     {
@@ -712,7 +712,7 @@ class Paybox_Epayment_Model_Paybox
         }
         if (empty($data)) {
             $helper = Mage::helper('pbxep');
-            Mage::throwException($helper->__('An unexpected error in Paybox call has occured: no parameters.'));
+            Mage::throwException($helper->__('An unexpected error in Verifone e-commerce call has occured: no parameters.'));
         }
 
         // Log params if needed
@@ -726,7 +726,7 @@ class Paybox_Epayment_Model_Paybox
             $matches = array();
             if (!preg_match('#^(.*)&K=(.*)$#', $data, $matches)) {
                 $helper = Mage::helper('pbxep');
-                Mage::throwException($helper->__('An unexpected error in Paybox call has occured: missing signature.'));
+                Mage::throwException($helper->__('An unexpected error in Verifone e-commerce call has occured: missing signature.'));
             }
 
             // Check signature
@@ -742,7 +742,7 @@ class Paybox_Epayment_Model_Paybox
 
                 if (!$res) {
                     $helper = Mage::helper('pbxep');
-//                    Mage::throwException($helper->__('An unexpected error in Paybox call has occured: invalid signature.'));
+//                    Mage::throwException($helper->__('An unexpected error in Verifone e-commerce call has occured: invalid signature.'));
                 }
             }
         }
@@ -754,7 +754,7 @@ class Paybox_Epayment_Model_Paybox
         $params = $this->convertParams($rawParams);
         if (empty($params)) {
             $helper = Mage::helper('pbxep');
-            Mage::throwException($helper->__('An unexpected error in Paybox call has occured.'));
+            Mage::throwException($helper->__('An unexpected error in Verifone e-commerce call has occured.'));
         }
 
         return $params;
@@ -765,7 +765,7 @@ class Paybox_Epayment_Model_Paybox
         $config = $this->getConfig();
         $urls = $config->getSystemUrls();
         if (empty($urls)) {
-            $message = 'Missing URL for Paybox system in configuration';
+            $message = 'Missing URL for Verifone e-commerce system in configuration';
             $helper = Mage::helper('pbxep');
             Mage::throwException($helper->__($message));
         }
@@ -780,7 +780,7 @@ class Paybox_Epayment_Model_Paybox
         $config = $this->getConfig();
         $urls = $config->getResponsiveUrls();
         if (empty($urls)) {
-            $message = 'Missing URL for Paybox responsive in configuration';
+            $message = 'Missing URL for Verifone e-commerce responsive in configuration';
             throw new \LogicException(__($message));
         }
 
@@ -795,7 +795,7 @@ class Paybox_Epayment_Model_Paybox
         $config = $this->getConfig();
         $urls = $config->getKwixoUrls();
         if (empty($urls)) {
-            $message = 'Missing URL for Paybox system in configuration';
+            $message = 'Missing URL for Verifone e-commerce system in configuration';
             $helper = Mage::helper('pbxep');
             Mage::throwException($helper->__($message));
         }

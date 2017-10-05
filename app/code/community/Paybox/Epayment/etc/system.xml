@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- /**
- * Paybox Epayment module for Magento
+ * Verifone e-commerce Epayment module for Magento
  *
- * Feel free to contact Paybox at support@paybox.com for any
+ * Feel free to contact Verifone e-commerce at support@paybox.com for any
  * question.
  *
  * LICENSE: This source file is subject to the version 3.0 of the Open
@@ -15,7 +15,7 @@
  *
  * @version   3.0.4
  * @author    BM Services <contact@bm-services.com>
- * @copyright 2012-2017 Paybox
+ * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
  * @link      http://www.paybox.com/
  */
@@ -23,7 +23,7 @@
 <config>
     <tabs>
         <pbxep translate="label comment" module="pbxep">
-            <label>Paybox</label>
+            <label>Verifone e-commerce</label>
             <sort_order>400</sort_order>
         </pbxep>
     </tabs>
@@ -78,7 +78,7 @@
                     <show_in_store>1</show_in_store>
                     <fields>
                         <subscription translate="label comment">
-                            <label>Subscribed Paybox Solution</label>
+                            <label>Subscribed Verifone e-commerce Solution</label>
                             <frontend_type>select</frontend_type>
                             <source_model>pbxep/admin_subscription</source_model>
                             <config_path>pbxep/merchant/subscription</config_path>
@@ -89,7 +89,7 @@
                         </subscription>
                         <site translate="label comment">
                             <label>Site number</label>
-                            <comment><![CDATA[Site number provided by Paybox.]]></comment>
+                            <comment><![CDATA[Site number provided by Verifone e-commerce.]]></comment>
                             <frontend_type>text</frontend_type>
                             <config_path>pbxep/merchant/site</config_path>
                             <validate>required-entry validate-digits validate-exact-length length-7</validate>
@@ -100,7 +100,7 @@
                         </site>
                         <rank translate="label comment">
                             <label>Rank number</label>
-                            <comment><![CDATA[Rank number provided by Paybox (last 2 digits).]]></comment>
+                            <comment><![CDATA[Rank number provided by Verifone e-commerce (last 2 digits).]]></comment>
                             <frontend_type>text</frontend_type>
                             <config_path>pbxep/merchant/rank</config_path>
                             <validate>required-entry validate-digits validate-exact-length length-2</validate>
@@ -111,7 +111,7 @@
                         </rank>
                         <identifier translate="label comment">
                             <label>Login</label>
-                            <comment><![CDATA[Internal login provided by Paybox.]]></comment>
+                            <comment><![CDATA[Internal login provided by Verifone e-commerce.]]></comment>
                             <config_path>pbxep/merchant/identifier</config_path>
                             <frontend_type>text</frontend_type>
                             <validate>required-entry validate-digits validate-length maximum-length-9</validate>
@@ -122,7 +122,7 @@
                         </identifier>
                         <hmackey translate="label comment">
                             <label>HMAC</label>
-                            <comment><![CDATA[Secrete HMAC key to create using the Paybox interface.]]></comment>
+                            <comment><![CDATA[Secrete HMAC key to create using the Verifone e-commerce interface.]]></comment>
                             <frontend_type>text</frontend_type>
                             <backend_model>pbxep/admin_backend_encrypted</backend_model>
                             <config_path>pbxep/merchant/hmackey</config_path>
@@ -133,8 +133,8 @@
                             <show_in_store>1</show_in_store>
                         </hmackey>
                         <password translate="label comment">
-                            <label>Paybox Back Office password</label>
-                            <comment><![CDATA[Back Office password provided by Paybox.]]></comment>
+                            <label>Verifone e-commerce Back Office password</label>
+                            <comment><![CDATA[Back Office password provided by Verifone e-commerce.]]></comment>
                             <frontend_type>text</frontend_type>
                             <backend_model>pbxep/admin_backend_encrypted</backend_model>
                             <config_path>pbxep/merchant/password</config_path>
@@ -147,8 +147,8 @@
                             </depends>
                         </password>
                         <passwordplus translate="label comment">
-                            <label>Paybox Back Office password</label>
-                            <comment><![CDATA[Back Office password provided by Paybox.]]></comment>
+                            <label>Verifone e-commerce Back Office password</label>
+                            <comment><![CDATA[Back Office password provided by Verifone e-commerce.]]></comment>
                             <frontend_type>text</frontend_type>
                             <backend_model>pbxep/admin_backend_encrypted</backend_model>
                             <config_path>pbxep/merchant/passwordplus</config_path>
@@ -173,7 +173,7 @@
                     <fields>
                         <customer_info translate="label comment">
                             <label>Show payment information to customers</label>
-                            <comment><![CDATA[Paybox module can show payment information to customer. You can disable this feature here.]]></comment>
+                            <comment><![CDATA[Verifone e-commerce module can show payment information to customer. You can disable this feature here.]]></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <config_path>pbxep/info_to_customer</config_path>
@@ -221,7 +221,7 @@
                     <fields>
                         <cron_status translate="label comment">
                             <label>Cron to Cancel old order</label>
-                            <comment><![CDATA[If yes, this cron will pass all orders awaiting Payment via Paybox to be canceled.]]></comment>
+                            <comment><![CDATA[If yes, this cron will pass all orders awaiting Payment via Verifone e-commerce to be canceled.]]></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <config_path>pbxep/cron_status</config_path>
@@ -277,7 +277,7 @@
                         </debug>
                         <allowedips translate="label comment">
                             <label>Allowed IPs</label>
-                            <comment><![CDATA[A coma separated list of Paybox IPs.]]></comment>
+                            <comment><![CDATA[A coma separated list of Verifone e-commerce IPs.]]></comment>
                             <frontend_type>text</frontend_type>
                             <config_path>pbxep/allowedips</config_path>
                             <sort_order>20</sort_order>
@@ -319,7 +319,7 @@
                         </active>
                         <cctypes translate="label comment">
                             <label>Card type</label>
-                            <comment><![CDATA[If you disable E-Carte Bleu, contact the Paybox support]]></comment>
+                            <comment><![CDATA[If you disable E-Carte Bleu, contact the Verifone e-commerce support]]></comment>
                             <config_path>payment/pbxep_cb/cctypes</config_path>
                             <frontend_model>pbxep/admin_field_checkboxes</frontend_model>
                             <frontend_type>checkboxes</frontend_type>
@@ -523,7 +523,7 @@
                         </tds_info>
                         <tds_active translate="label comment">
                             <label>Enable 3-D Secure</label>
-                            <comment><![CDATA[<span style="color: red;">Warning: your bank may enforce 3-D Secure.<br/>Make sure your setup is coherent with your bank, Paybox and Magento module.</span>]]></comment>
+                            <comment><![CDATA[<span style="color: red;">Warning: your bank may enforce 3-D Secure.<br/>Make sure your setup is coherent with your bank, Verifone e-commerce and Magento module.</span>]]></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>pbxep/admin_payment_use3ds</source_model>
                             <config_path>payment/pbxep_cb/tds_active</config_path>
@@ -560,7 +560,7 @@
                     <show_in_store>1</show_in_store>
                     <fields>
                         <info translate="label comment">
-                            <label><![CDATA[Check your Paybox contract before enabling this option.]]></label>
+                            <label><![CDATA[Check your Verifone e-commerce contract before enabling this option.]]></label>
                             <frontend_model>pbxep/admin_info</frontend_model>
                             <sort_order>5</sort_order>
                             <show_in_default>1</show_in_default>
@@ -582,7 +582,7 @@
                         </active>
                         <cctypes translate="label comment">
                             <label>Card type</label>
-                            <comment><![CDATA[If you disable E-Carte Bleu, contact the Paybox support]]></comment>
+                            <comment><![CDATA[If you disable E-Carte Bleu, contact the Verifone e-commerce support]]></comment>
                             <config_path>payment/pbxep_threetime/cctypes</config_path>
                             <frontend_model>pbxep/admin_field_checkboxes</frontend_model>
                             <frontend_type>checkboxes</frontend_type>
@@ -744,7 +744,7 @@
                         </tds_info>
                         <tds_active translate="label comment">
                             <label>Enable 3-D Secure</label>
-                            <comment><![CDATA[<span style="color: red;">Warning: your bank may enforce 3-D Secure.<br/>Make sure your setup is coherent with your bank, Paybox and Magento module.</span>]]></comment>
+                            <comment><![CDATA[<span style="color: red;">Warning: your bank may enforce 3-D Secure.<br/>Make sure your setup is coherent with your bank, Verifone e-commerce and Magento module.</span>]]></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>pbxep/admin_payment_use3ds</source_model>
                             <config_path>payment/pbxep_threetime/tds_active</config_path>
