@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.5
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -145,8 +145,8 @@ class Paybox_Epayment_Model_Observer extends Mage_Core_Model_Observer
         $orders = Mage::getModel('sales/order')->getCollection()
                 ->join('order_payment', '`order_payment`.parent_id = `main_table`.entity_id')
                 ->addFieldToSelect('entity_id', 'orderId')
-                ->addFieldToFilter('`order_payment`.method', array('like' => "pbxep\_%"))
-                ->addFieldToFilter('`main_table`.status', 'pending')
+                ->addFieldToFilter('order_payment.method', array('like' => "pbxep\_%"))
+                ->addFieldToFilter('main_table.status', 'pending')
                 ->addFieldToFilter('updated_at', array('lt' => $now));
         $count = 0;
         foreach ($orders as $order) {
