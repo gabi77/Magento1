@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.5
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -197,7 +197,7 @@
                         </currency>
                     </fields>
                     <fields>
-                        <currency translate="label comment">
+                        <responsive translate="label comment">
                             <label>Payment page type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>pbxep/config_source_ResponsiveYesNo</source_model>
@@ -206,11 +206,11 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </currency>
+                        </responsive>
                     </fields>
                 </misc>
                 <cron translate="label comment">
-                    <label>Cron configuration</label>
+                    <label>CRON configuration</label>
                     <expanded>1</expanded>
                     <frontend_type>text</frontend_type>
                     <comment><![CDATA[]]></comment>
@@ -220,8 +220,8 @@
                     <show_in_store>1</show_in_store>
                     <fields>
                         <cron_status translate="label comment">
-                            <label>Cron to Cancel old order</label>
-                            <comment><![CDATA[If yes, this cron will pass all orders awaiting Payment via Verifone e-commerce to be canceled.]]></comment>
+                            <label>Activate CRON to cancel orders</label>
+                            <comment><![CDATA[If Yes, the CRON will process all Verifone e-commerce orders awaiting payment to canceled status.]]></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <config_path>pbxep/cron_status</config_path>
@@ -231,8 +231,8 @@
                             <show_in_store>1</show_in_store>
                         </cron_status>
                         <cron_time translate="label comment">
-                            <label>Ages minute orders</label>
-                            <comment><![CDATA[If the order is older then it will be treated.]]></comment>
+                            <label>Age of the orders (in minutes)</label>
+                            <comment><![CDATA[If the order is older then it will be processed.]]></comment>
                             <frontend_type>text</frontend_type>
                             <config_path>pbxep/cron_time</config_path>
                             <sort_order>40</sort_order>
@@ -244,7 +244,7 @@
                             </depends>
                         </cron_time>
                         <cron_expression translate="label">
-                            <label>Cron expression</label>
+                            <label>CRON expression</label>
                             <frontend_type>text</frontend_type>
                             <config_path>pbxep/cron_expression</config_path>
                             <sort_order>200</sort_order>
