@@ -648,20 +648,24 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
 
         // Add message to history
         $order->addStatusHistoryComment($this->__($message));
+        $order->save();
 
         return $this;
     }
 
     /**
-     * Refund specified amount for payment
+     * Delete recurring payments
      *
+     * @param Mage_Sales_Model_Order $order
+     *
+     * @return bool
      */
-    public function deleteRecurringPayment(Order $order)
+    public function deleteRecurringPayment(Mage_Sales_Model_Order $order)
     {
         $paybox = $this->getPaybox();
         $this->logDebug(sprintf('Order %s: Cancel recurring payment - calling directRecurringDelete', $order->getIncrementId()));
         $result = $paybox->directRecurringDelete($order);
-        $this->logDebug(sprintf('Order %s: Cancel recurring payment - response code %s', $order->getIncrementId(), $result['ERREUR']));
+        $this->logDebug(sprintf('Order %s: Cancel recurring payment', $order->getIncrementId()));
 
         // Check answer
         if ($result['ACQ'] != 'OK') {
@@ -712,18 +716,18 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     public function onPaymentCanceled(Mage_Sales_Model_Order $order)
     {
         $config = $this->getPayboxConfig();
-        if (!$config->isCronCancelIsActive()) {//If cron is not active, we cancel the order
-            // Cancel order
+        $message = 'Payment was canceled by user on Verifone e-commerce payment page.';
+
+        // If cron is not active, we cancel the order
+        if (!$config->isCronCancelIsActive()) {
             $order->cancel();
-            // Add a message
-            $message = 'Payment was canceled by user on Verifone e-commerce payment page.';
-            $message = $this->__($message);
-            $status = $order->addStatusHistoryComment($message);
-
             $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
-
             $order->save();
         }
+
+        // Add a message
+        $status = $order->addStatusHistoryComment($this->__($message));
+        $status->save();
     }
 
     /**

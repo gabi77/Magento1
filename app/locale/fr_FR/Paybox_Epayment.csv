@@ -179,4 +179,6 @@
 "Age of the orders (in minutes)", "Age des commandes &agrave; traiter (en minutes)"
 "If the order is older then it will be processed.", "La commande sera trait&eacute;e si elle est plus ancienne"
 "CRON expression", "P&eacute;riodicit&eacute; du CRON"
-
+"Unable to cancel recurring payment.","Impossible d'annuler le paiement récurrent."
+"Payment was refund by Verifone e-commerce.","Le paiement a été remboursé par Verifone e-commerce."
+"Recurring payment canceled.","Paiement récurrent annulé."

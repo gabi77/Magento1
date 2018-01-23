@@ -150,52 +150,94 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
         $order = $payment->getOrder();
 
         // Find capture transaction
-        $collection = Mage::getModel('sales/order_payment_transaction')->getCollection()
-                ->setOrderFilter($order)
-                ->addPaymentIdFilter($payment->getId())
-                ->addTxnTypeFilter(Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE);
+        $this->logDebug(sprintf(
+            "Looking for transactions for Order ID %d and Payment ID %d Type %s",
+            $order->getId(),
+            $payment->getId(),
+            Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE
+        ));
+        $collection = Mage::getModel('sales/order_payment_transaction')
+            ->getCollection()
+            ->setOrderFilter($order->getId())
+            ->addPaymentIdFilter($payment->getId())
+            ->addTxnTypeFilter(Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE);
         if ($collection->getSize() == 0) {
             // If none, error
             Mage::throwException('No payment or capture transaction. Unable to refund.');
         }
 
-        // Transaction found
-        $txn = $collection->getFirstItem();
-
-        // Transaction not captured
-        if (!$txn->getIsClosed()) {
-            Mage::throwException('Payment was not fully captured. Unable to refund.');
-        }
-
         // Call Verifone e-commerce Direct
         $connector = $this->getPaybox();
-        $data = $connector->directRefund((float) $amount, $order, $txn);
 
-        // Message
-        if ($data['CODEREPONSE'] == '00000') {
-            $message = 'Payment was refund by Verifone e-commerce.';
-        } else {
-            $message = 'Verifone e-commerce direct error (' . $data['CODEREPONSE'] . ': ' . $data['COMMENTAIRE'] . ')';
+        foreach ($collection as $txn) {
+
+            // Refund transactions that have been captured
+            if (!is_null($txn) && !is_null($txn->getTxnType()) && !$this->txnHasBeenRefunded($order, $payment, $txn->getTxnId())) {
+
+                $cntr = Mage::getSingleton('pbxep/paybox');
+                $amountScale = $cntr->getCurrencyScale($order);
+                $amount = $txn->getAdditionalInformation(Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS)['amount'];
+                $amount = round($amount / $amountScale);
+                $this->logDebug(sprintf(
+                    "Trying to refund transaction ID %d for an amount of %s",
+                    $txn->getTxnId(),
+                    $amount
+                ));
+                $data = $connector->directRefund((float) $amount, $order, $txn);
+        
+                // Message
+                if ($data['CODEREPONSE'] == '00000') {
+                    $message = 'Payment was refund by Verifone e-commerce.';
+                } else {
+                    $message = 'Verifone e-commerce direct error (' . $data['CODEREPONSE'] . ': ' . $data['COMMENTAIRE'] . ')';
+                }
+
+                $data['status'] = $message;
+                $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
+
+                // Transaction
+                $transaction = $this->_addPayboxDirectTransaction($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND, $data, true, array(), $txn);
+                $transaction->save();
+
+                // Avoid automatic transaction creation
+                $payment->setSkipTransactionCreation(true);
+
+                // If Verifone e-commerce returned an error, throw an exception
+                if ($data['CODEREPONSE'] != '00000') {
+                    Mage::throwException($message);
+                }
+
+                // Add message to history
+                $order->addStatusHistoryComment($this->__($message));
+
+            }
         }
 
-        $data['status'] = $message;
-        $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
-
-        // Transaction
-        $transaction = $this->_addPayboxDirectTransaction($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND, $data, true, array(), $txn);
-        $transaction->save();
-
-        // Avoid automatic transaction creation
-        $payment->setSkipTransactionCreation(true);
-
-        // If Verifone e-commerce returned an error, throw an exception
-        if ($data['CODEREPONSE'] != '00000') {
-            Mage::throwException($message);
-        }
-
-        // Add message to history
-        $order->addStatusHistoryComment($this->__($message));
+        // And now delete recurring payments
+        $this->deleteRecurringPayment($order);
 
         return $this;
+    }
+
+    private function txnHasBeenRefunded($order, Varien_Object $payment, $txnId)
+    {
+        $this->logDebug(sprintf(
+            "Looking for a transaction ID %d for Order ID %d - Type %s",
+            $txnId,
+            $order->getId(),
+            Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND
+        ));
+        $collection = Mage::getModel('sales/order_payment_transaction')->getCollection()
+                ->setOrderFilter($order->getId())
+                ->addPaymentIdFilter($payment->getId())
+                ->addAttributeToFilter('parent_txn_id', $txnId)
+                ->addTxnTypeFilter(Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND);
+        if ($collection->getSize() == 0) {
+            $this->logDebug(sprintf("Transaction %d has NOT already been refunded", $txnId));
+            return false;
+        } else {
+            $this->logDebug(sprintf("Transaction %d has already been refunded", $txnId));
+            return  true;
+        }
     }
 }

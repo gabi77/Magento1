@@ -104,23 +104,34 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info
     public function canRefund()
     {
         $info = $this->getInfo();
-        $config = $this->getPayboxConfig();
-
-        $order = $info->getOrder();
         $method = $info->getOrder()->getPayment()->getMethodInstance();
         if (!$method->getAllowRefund()) {
             return false;
         }
 
-        $action = $info->getPbxepAction();
-        if ($action == 'three-time') {
-            $capture = $info->getPbxepFirstPayment();
-        } else {
-            $capture = $info->getPbxepCapture();
+        $config = $this->getPayboxConfig();
+        if ($config->getSubscription() != Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER2 && $config->getSubscription() != Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER3) {
+            return false;
         }
 
-        if ($config->getSubscription() == Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER2 || $config->getSubscription() == Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER3) {
-            return !empty($capture);
+        $order = $info->getOrder();
+        $payment = $order->getPayment();
+        $collection = Mage::getModel('sales/order_payment_transaction')
+            ->getCollection()
+            ->setOrderFilter($order->getId())
+            ->addPaymentIdFilter($payment->getId())
+            ->addTxnTypeFilter(Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE);
+
+        // No transactions to refund
+        if ($collection->getSize() == 0) {
+            return false;
+        }
+
+        // Check if at least one transaction can be refund
+        foreach ($collection as $txn) {
+            if (!is_null($txn) && !is_null($txn->getTxnType()) && !$this->txnHasBeenRefunded($order, $payment, $txn->getTxnId())) {
+                return true;
+            }
         }
 
         return false;
@@ -213,20 +224,11 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info
     public function getRefundUrl()
     {
         $info = $this->getInfo();
-        $order = $info->getOrder();
-        $invoices = $order->getInvoiceCollection();
-        foreach ($invoices as $invoice) {
-            if ($invoice->canRefund()) {
-                return Mage::helper("adminhtml")->getUrl(
-                    "*/sales_order_creditmemo/new", array(
-                            'order_id' => $order->getId(),
-                            'invoice_id' => $invoice->getId(),
-                    )
-                );
-            }
-        }
-
-        return null;
+        return Mage::helper("adminhtml")->getUrl(
+            "*/pbxep/refund", array(
+                    'order_id' => $info->getOrder()->getId(),
+            )
+        );
     }
 
     public function getRecurringDeleteUrl()
@@ -250,4 +252,16 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info
 
         return false;
     }
+
+    private function txnHasBeenRefunded($order, Varien_Object $payment, $txnId)
+    {
+        $collection = Mage::getModel('sales/order_payment_transaction')->getCollection()
+                ->setOrderFilter($order->getId())
+                ->addPaymentIdFilter($payment->getId())
+                ->addAttributeToFilter('parent_txn_id', $txnId)
+                ->addTxnTypeFilter(Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND);
+
+        return $collection->getSize() > 0;
+    }
+
 }

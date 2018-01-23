@@ -65,4 +65,27 @@ class Paybox_Epayment_Adminhtml_PbxepController extends Mage_Adminhtml_Controlle
 
         $this->_redirect('*/sales_order/view', array('order_id' => $orderId));
     }
+
+    public function refundAction()
+    {
+        $orderId = $this->getRequest()->getParam('order_id');
+        $order = Mage::getModel('sales/order')->load($orderId);
+        $data = $this->getRequest()->getParams();
+
+        $payment = $order->getPayment();
+        $method = $payment->getMethodInstance();
+
+        $result = $method->refund($payment, $order->getTotalPaid());
+
+        if (!$result) {
+            Mage::getSingleton('adminhtml/session')->addError($this->__('Unable to refund order.'));
+            Mage::getSingleton('adminhtml/session')->setCommentText($this->__('Unable to refund order.'));
+        } else {
+            Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Captured transactions have been refunded.'));
+            Mage::getSingleton('adminhtml/session')->setCommentText($this->__('Captured transactions have been refunded.'));
+        }
+
+        $this->_redirect('*/sales_order/view', array('order_id' => $orderId));
+    }
+
 }

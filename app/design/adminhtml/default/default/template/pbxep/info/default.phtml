@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -122,15 +122,6 @@ if (($controllerName == 'sales_order') && $this->canRefund()):
     </span>
 </button>
 <?php endif; ?>
-<?php endif; ?>
-<?php if (!$this->threeTimeClosed()): 
-    $url = $this->getRecurringDeleteUrl();
-?>
-<button type="button" class="scalable" title="<?php echo $this->__('Cancel recurring payment'); ?>" id="recurringtotal" onclick="setLocation('<?php echo $this->escapeHtml($url); ?>')">
-    <span>
-        <span><?php echo $this->__('Cancel recurring payment'); ?></span>
-    </span>
-</button>
 <?php endif; ?>
 <?php endif; ?>
 <?php echo $this->getChildHtml()?>
