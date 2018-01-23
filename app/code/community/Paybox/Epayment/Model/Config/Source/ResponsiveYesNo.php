@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -30,7 +30,7 @@ class Paybox_Epayment_Model_Config_Source_ResponsiveYesNo
      */
     public function toOptionArray()
     {
-        return [['value' => 1, 'label' => __('Responsive')], ['value' => 0, 'label' => __('Classic')]];
+        return array(array('value' => 1, 'label' => __('Responsive')), array('value' => 0, 'label' => __('Classic')));
     }
 
     /**
@@ -40,6 +40,6 @@ class Paybox_Epayment_Model_Config_Source_ResponsiveYesNo
      */
     public function toArray()
     {
-        return [0 => __('Classic'), 1 => __('Responsive')];
+        return array(0 => __('Classic'), 1 => __('Responsive'));
     }
 }

@@ -14,7 +14,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.5
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -38,6 +38,7 @@ class Paybox_Epayment_Block_Redirect extends Mage_Page_Block_Html
         if ($config->isDebug()) {
             return 'text';
         }
+
         return 'hidden';
     }
 

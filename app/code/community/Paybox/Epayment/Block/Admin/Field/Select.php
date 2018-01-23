@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -34,6 +34,7 @@ class Paybox_Epayment_Block_Admin_Field_Select extends Mage_Adminhtml_Block_Syst
             foreach ($option['value'] as $groupItem) {
                 $html .= $this->_optionToHtml($groupItem, $selected);
             }
+
             $html .='</optgroup>'."\n";
         } else {
             $html = '<option value="'.Mage::helper('core')->escapeHtml($option['value']).'"';
@@ -43,8 +44,10 @@ class Paybox_Epayment_Block_Admin_Field_Select extends Mage_Adminhtml_Block_Syst
             if (in_array($option['value'], $selected)) {
                 $html.= ' selected="selected"';
             }
+
             $html.= '>'.Mage::helper('core')->escapeHtml($option['label']). '</option>'."\n";
         }
+
         return $html;
     }
 
@@ -63,7 +66,8 @@ class Paybox_Epayment_Block_Admin_Field_Select extends Mage_Adminhtml_Block_Syst
         if ($values = $element->getValues()) {
             foreach ($values as $key => $option) {
                 if (!is_array($option)) {
-                    $html.= $this->_optionToHtml(array(
+                    $html.= $this->_optionToHtml(
+                        array(
                         'value' => $key,
                         'label' => $option),
                         $value
@@ -73,6 +77,7 @@ class Paybox_Epayment_Block_Admin_Field_Select extends Mage_Adminhtml_Block_Syst
                     foreach ($option['value'] as $groupItem) {
                         $html.= $this->_optionToHtml($groupItem, $value);
                     }
+
                     $html.='</optgroup>'."\n";
                 } else {
                     $html.= $this->_optionToHtml($option, $value);

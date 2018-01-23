@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.5
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -131,6 +131,7 @@ class Paybox_Epayment_Model_Config
                 return $value == 1;
             }
         }
+
         throw new Exception('No function ' . $name);
     }
 
@@ -139,6 +140,7 @@ class Paybox_Epayment_Model_Config
         if (is_null($this->_store)) {
             $this->_store = Mage::app()->getStore();
         }
+
         return $this->_store;
     }
 
@@ -149,6 +151,7 @@ class Paybox_Epayment_Model_Config
         } else {
             $this->_store = Mage::getModel('core/store')->load($storeId);
         }
+
         return $this->_store;
     }
 
@@ -162,10 +165,12 @@ class Paybox_Epayment_Model_Config
         if (is_null($environment)) {
             $environment = $this->getEnvironment();
         }
+
         $environment = strtolower($environment);
         if (isset($this->_urls[$type][$environment])) {
             return $this->_urls[$type][$environment];
         }
+
         return array();
     }
 
@@ -238,6 +243,7 @@ class Paybox_Epayment_Model_Config
         if (is_null($value)) {
             $value = 0;
         }
+
         return (int) $value;
     }
 
@@ -257,6 +263,7 @@ class Paybox_Epayment_Model_Config
         if (is_null($value)) {
             $value = 1;
         }
+
         return (int) $value;
     }
 
@@ -266,6 +273,7 @@ class Paybox_Epayment_Model_Config
         if (is_null($value)) {
             $value = 0;
         }
+
         return (int) $value;
     }
 
@@ -280,6 +288,7 @@ class Paybox_Epayment_Model_Config
         if (is_null($value)) {
             $value = 1;
         }
+
         return (int) $value;
     }
 
@@ -289,6 +298,7 @@ class Paybox_Epayment_Model_Config
         if (is_null($value)) {
             $value = 1;
         }
+
         return (int) $value;
     }
 
@@ -298,6 +308,7 @@ class Paybox_Epayment_Model_Config
         if (is_null($value)) {
             $value = 4;
         }
+
         return (int) $value;
     }
 
@@ -307,6 +318,7 @@ class Paybox_Epayment_Model_Config
         if (is_null($value)) {
             $value = 2;
         }
+
         return (int) $value;
     }
 

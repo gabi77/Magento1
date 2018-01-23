@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -30,8 +30,10 @@ class Paybox_Epayment_Block_Admin_Kwixo_Shipping extends Mage_Adminhtml_Block_Sy
             if ($value['value'] == $current) {
                 $html .= ' selected="selected"';
             }
+
             $html .= '>'.$this->escapeHtml($value['label']).'</option>';
         }
+
         $html .= '</select>';
         return $html;
     }
@@ -68,9 +70,11 @@ class Paybox_Epayment_Block_Admin_Kwixo_Shipping extends Mage_Adminhtml_Block_Sy
             if (isset($values[$code]['type'])) {
                 $type = (int)$values[$code]['type'];
             }
+
             if (isset($values[$code]['speed'])) {
                 $speed = (int)$values[$code]['speed'];
             }
+
             if (isset($values[$code]['name'])) {
                 $name = (string)$values[$code]['name'];
             }
@@ -85,6 +89,7 @@ class Paybox_Epayment_Block_Admin_Kwixo_Shipping extends Mage_Adminhtml_Block_Sy
             $html .= '<td><input type="text" name="'.$base.'[name]" value="'.$this->escapeHtml($name).'"/></td>';
             $html .= '</tr>';
         }
+
         $html .= '</tbody></table>';
         $html .= '</td>';
         return $this->_decorateRowHtml($element, $html);

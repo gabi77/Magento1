@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -67,10 +67,12 @@ class Paybox_Epayment_Model_Context
             $message = 'Not existing order id from decrypted reference "%s"';
             Mage::throwException(Mage::helper('pbxep')->__($message, $reference));
         }
+
         if (is_null($order->getId())) {
             $message = 'Not existing order id from decrypted reference "%s"';
             Mage::throwException(Mage::helper('pbxep')->__($message, $reference));
         }
+
         if ($order->getCustomerName() != $parts[1]) {
             $message = 'Consistency error on descrypted reference "%s"';
             Mage::throwException(Mage::helper('pbxep')->__($message, $reference));

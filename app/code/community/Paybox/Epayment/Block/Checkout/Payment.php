@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -34,6 +34,7 @@ class Paybox_Epayment_Block_Checkout_Payment extends Mage_Payment_Block_Form_Cc
         if (!empty($head)) {
             $head->addCss('css/pbxep/styles.css');
         }
+
         return parent::_prepareLayout();
     }
 
@@ -47,6 +48,7 @@ class Paybox_Epayment_Block_Checkout_Payment extends Mage_Payment_Block_Form_Cc
                 $result[$code] = $card;
             }
         }
+
         return $result;
     }
 
@@ -62,6 +64,7 @@ class Paybox_Epayment_Block_Checkout_Payment extends Mage_Payment_Block_Form_Cc
             $alt = $this->htmlEscape($card['label']);
             $html[] = '<img class="pbxep-payment-logo" src="'.$url.'" alt="'.$alt.'"/>';
         }
+
         $html = '<span class="pbxep-payment-label">'.implode('&nbsp;', $html).'</span>';
         return $html;
     }

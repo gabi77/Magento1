@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.5
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -34,6 +34,7 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             $this->logFatal(sprintf('Order %s: (IPN) %s', $order->getIncrementId(), $message));
             Mage::throwException($message);
         }
+
         if (!isset($params['transaction'])) {
             $message = $this->__('Missing transaction parameter');
             $this->logFatal(sprintf('Order %s: (IPN) %s', $order->getIncrementId(), $message));
@@ -52,10 +53,12 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
         $type = $withCapture ?
                 Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE :
                 Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH;
-        $txn = $this->_addPayboxTransaction($order, $type, $data, false, array(
+        $txn = $this->_addPayboxTransaction(
+            $order, $type, $data, false, array(
             Paybox_Epayment_Model_Payment_Abstract::CALL_NUMBER => $data['call'],
             Paybox_Epayment_Model_Payment_Abstract::TRANSACTION_NUMBER => $data['transaction'],
-        ));
+            )
+        );
         if (is_null($payment->getPbxepFirstPayment())) {
             $this->logDebug(sprintf('Order %s: First payment', $order->getIncrementId()));
 
@@ -93,6 +96,7 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             } else {
                 $order->addStatusHistoryComment($message);
             }
+
             $order->save();
         } elseif (is_null($payment->getPbxepSecondPayment())) {
             // Message
@@ -122,6 +126,7 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             $this->logDebug(sprintf('Order %s: Invalid three-time payment status', $order->getIncrementId()));
             Mage::throwException('Invalid three-time payment status');
         }
+
         $data['status'] = $message;
 
 
@@ -133,6 +138,7 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
         if (isset($invoice)) {
             $transactionSave->addObject($invoice);
         }
+
         $transactionSave->save();
 
         // Client notification if needed
@@ -141,8 +147,6 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
 
     public function refund(Varien_Object $payment, $amount)
     {
-        echo 'threetime refund';
-        die();
         $order = $payment->getOrder();
 
         // Find capture transaction
@@ -173,6 +177,7 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
         } else {
             $message = 'Verifone e-commerce direct error (' . $data['CODEREPONSE'] . ': ' . $data['COMMENTAIRE'] . ')';
         }
+
         $data['status'] = $message;
         $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
 

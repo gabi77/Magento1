@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.5
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -69,6 +69,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
             $this->_canCapturePartial = false;
             $this->_canRefundInvoicePartial = false;
         }
+
         $this->_canCapture = true;
     }
 
@@ -104,6 +105,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
                 throw new Exception('Invalid transaction id ' . $txnId);
             }
         }
+
         $payment->setTransactionId($txnId);
         $payment->setParentTransactionId(null);
         $transaction = $type;
@@ -112,6 +114,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         foreach ($infos as $key => $value) {
             $transaction->setAdditionalInformation($key, $value);
         }
+
         if (!empty($parent)) {
             $transaction->setParentTxnId($parent->getTxnId());
         }
@@ -185,6 +188,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
                     return $item;
                 }
             }
+
             return null;
         }
 
@@ -208,6 +212,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         if (!($data instanceof Varien_Object)) {
             $data = new Varien_Object($data);
         }
+
         $info = $this->getInfoInstance();
         $info->setCcType($data->getCcType());
         return $this;
@@ -226,7 +231,6 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         $order = $payment->getOrder();
         $order->addStatusHistoryComment('Call to cancel()');
         $order->save();
-        die();
         return $this;
     }
 
@@ -308,15 +312,18 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
             $message = 'Verifone e-commerce direct error (' . $data['CODEREPONSE'] . ': ' . $data['COMMENTAIRE'] . ')';
             $close = false;
         }
+
         $data['status'] = $message;
         $this->logDebug(sprintf('Order %s: Capture - %s', $order->getIncrementId(), $message));
 
         // Transaction
         $type = Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE;
-        $captureTxn = $this->_addPayboxDirectTransaction($order, $type, $data, $close, array(
+        $captureTxn = $this->_addPayboxDirectTransaction(
+            $order, $type, $data, $close, array(
             Paybox_Epayment_Model_Payment_Abstract::CALL_NUMBER => $data['NUMAPPEL'],
             Paybox_Epayment_Model_Payment_Abstract::TRANSACTION_NUMBER => $data['NUMTRANS'],
-                ), $txn);
+            ), $txn
+        );
         $captureTxn->save();
         if ($close) {
             $captureTxn->close();
@@ -390,6 +397,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         if ($this->getPayboxAction() == Paybox_Epayment_Model_Payment_Abstract::PBXACTION_MANUAL) {
             return Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE;
         }
+
         return Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE;
     }
 
@@ -435,8 +443,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
                 }
                 break;
             case Paybox_Epayment_Model_Payment_Abstract::PBXACTION_MANUAL:
-                if (
-                        (($config->getSubscription() != Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER2) &&
+                if ((($config->getSubscription() != Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER2) &&
                         ($config->getSubscription() != Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER3)) ||
                         !$this->getAllowManualDebit()) {
                     return Paybox_Epayment_Model_Payment_Abstract::PBXACTION_IMMEDIATE;
@@ -445,6 +452,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
             default:
                 $action = Paybox_Epayment_Model_Payment_Abstract::PBXACTION_IMMEDIATE;
         }
+
         return $action;
     }
 
@@ -478,8 +486,10 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
                 $cctypes = preg_replace('/NONE,?/', '', $cctypes);
                 return !empty($cctypes);
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -549,9 +559,11 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         if (empty($txn)) {
             return false;
         }
+
         if ($txn->getIsClosed()) {
             return false;
         }
+
         if (!$order->canInvoice()) {
             return false;
         }
@@ -618,6 +630,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         } else {
             $message = 'Verifone e-commerce direct error (' . $data['CODEREPONSE'] . ': ' . $data['COMMENTAIRE'] . ')';
         }
+
         $data['status'] = $message;
         $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
 
@@ -878,6 +891,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
                 Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
             );
         }
+
         $data['status'] = $message;
 
         // Status and message
@@ -888,10 +902,12 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         $type = $withCapture ?
                 Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE :
                 Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH;
-        $txn = $this->_addPayboxTransaction($order, $type, $data, $withCapture, array(
+        $txn = $this->_addPayboxTransaction(
+            $order, $type, $data, $withCapture, array(
             Paybox_Epayment_Model_Payment_Abstract::CALL_NUMBER => $data['call'],
             Paybox_Epayment_Model_Payment_Abstract::TRANSACTION_NUMBER => $data['transaction'],
-        ));
+            )
+        );
 
         // Associate data to payment
         $payment->setPbxepAction($this->getPayboxAction());
@@ -909,6 +925,7 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         } else {
             $order->addStatusHistoryComment($message);
         }
+
         $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
 
         $order->save();

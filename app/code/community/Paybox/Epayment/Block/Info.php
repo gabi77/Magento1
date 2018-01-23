@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -38,6 +38,7 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info
                 $result[$code] = $card;
             }
         }
+
         return $result;
     }
 
@@ -62,6 +63,7 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info
             $card = $cards[$data['cardType']];
             return $this->getSkinUrl($card['image'], array('_area' => 'frontend'));
         }
+
         return $this->getSkinUrl('images/pbxep/'.strtolower($data['cardType']).'.45.png', array('_area' => 'frontend'));
     }
 
@@ -72,6 +74,7 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info
         if (!isset($cards[$data['cardType']])) {
             return null;
         }
+
         $card = $cards[$data['cardType']];
         return $card['label'];
     }
@@ -94,6 +97,7 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info
                 return empty($capture) && $order->canInvoice();
             }
         }
+
         return false;
     }
 
@@ -114,9 +118,11 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info
         } else {
             $capture = $info->getPbxepCapture();
         }
+
         if ($config->getSubscription() == Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER2 || $config->getSubscription() == Paybox_Epayment_Model_Config::SUBSCRIPTION_OFFER3) {
             return !empty($capture);
         }
+
         return false;
     }
 
@@ -134,6 +140,7 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info
             $delays = Mage::getSingleton('pbxep/admin_payment_delays')->toOptionArray();
             $result .= ' (' . $delays[$info->getPbxepDelay()]['label'] . ')';
         }
+
         return $result;
     }
 
@@ -163,37 +170,44 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info
             $date = preg_replace('/^([0-9]{2})([0-9]{2})([0-9]{4})$/', '$1/$2/$3', $data['date']);
             $result['first'] = $this->__('%s (%s)', $data['amount'] / 100.0, $date);
         }
+
         $data = $info->getPbxepSecondPayment();
         if (!empty($data)) {
             $data = unserialize($data);
             $date = preg_replace('/^([0-9]{2})([0-9]{2})([0-9]{4})$/', '$1/$2/$3', $data['date']);
             $result['second'] = $this->__('%s (%s)', $data['amount'] / 100.0, $date);
         }
+
         $data = $info->getPbxepThirdPayment();
         if (!empty($data)) {
             $data = unserialize($data);
             $date = preg_replace('/^([0-9]{2})([0-9]{2})([0-9]{4})$/', '$1/$2/$3', $data['date']);
             $result['third'] = $this->__('%s (%s)', $data['amount'] / 100.0, $date);
         }
+
         return $result;
     }
 
     public function getPartialCaptureUrl()
     {
         $info = $this->getInfo();
-        return Mage::helper("adminhtml")->getUrl("*/sales_order_invoice/start", array(
+        return Mage::helper("adminhtml")->getUrl(
+            "*/sales_order_invoice/start", array(
                     'order_id' => $info->getOrder()->getId(),
-        ));
+            )
+        );
     }
 
     public function getCaptureUrl()
     {
         $data = $this->getPayboxData();
         $info = $this->getInfo();
-        return Mage::helper("adminhtml")->getUrl("*/pbxep/invoice", array(
+        return Mage::helper("adminhtml")->getUrl(
+            "*/pbxep/invoice", array(
                     'order_id' => $info->getOrder()->getId(),
                     'transaction' => $data['transaction'],
-        ));
+            )
+        );
     }
 
     public function getRefundUrl()
@@ -203,12 +217,15 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info
         $invoices = $order->getInvoiceCollection();
         foreach ($invoices as $invoice) {
             if ($invoice->canRefund()) {
-                return Mage::helper("adminhtml")->getUrl("*/sales_order_creditmemo/new", array(
+                return Mage::helper("adminhtml")->getUrl(
+                    "*/sales_order_creditmemo/new", array(
                             'order_id' => $order->getId(),
                             'invoice_id' => $invoice->getId(),
-                ));
+                    )
+                );
             }
         }
+
         return null;
     }
 
@@ -216,9 +233,11 @@ class Paybox_Epayment_Block_Info extends Mage_Payment_Block_Info
     {
         $data = $this->getPayboxData();
         $info = $this->getInfo();
-        return Mage::helper("adminhtml")->getUrl("*/pbxep/recurring", array(
+        return Mage::helper("adminhtml")->getUrl(
+            "*/pbxep/recurring", array(
                     'order_id' => $info->getOrder()->getId(),
-        ));
+            )
+        );
     }
 
     public function threeTimeClosed()

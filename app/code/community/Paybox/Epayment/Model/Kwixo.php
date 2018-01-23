@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -121,11 +121,13 @@ class Paybox_Epayment_Model_Kwixo
         $orders = Mage::getModel('sales/order')->getCollection()
                 ->addAttributeToSelect('grand_total')
                 ->addAttributeToSelect('created_at')
-                ->addFieldToFilter('status', array('in' => array(
+                ->addFieldToFilter(
+                    'status', array('in' => array(
                         'processing',
                         'complete',
                         'closed',
-            )))
+                    ))
+                )
                 ->addFieldToFilter('customer_id', $order->getCustomerId());
         $sum = 0;
         $first = new DateTime();
@@ -138,6 +140,7 @@ class Paybox_Epayment_Model_Kwixo
             if ($date < $first) {
                 $first = $date;
             }
+
             if ($date > $last) {
                 $last = $date;
             }
@@ -150,6 +153,7 @@ class Paybox_Epayment_Model_Kwixo
             $values['PBX_BILLTO_DATE_FIRST'] = $first->format('Y-m-d') . 'T' . $first->format('H:i:s');
             $values['PBX_BILLTO_DATE_LAST'] = $last->format('Y-m-d') . 'T' . $last->format('H:i:s');
         }
+
         return $values;
     }
 
@@ -168,9 +172,11 @@ class Paybox_Epayment_Model_Kwixo
             if (empty($type)) {
                 $type = $config->getKwixoDefaultCategory();
             }
+
             if (empty($type)) {
                 $type = 1;
             }
+
             $products[] = array(
                 'reference' => $this->cleanupUpString($sku),
                 'type' => (string)$type,
@@ -209,6 +215,7 @@ class Paybox_Epayment_Model_Kwixo
             if (empty($shipping['name'])) {
                 $shipping['name'] = $carrier->getConfigData('title');
             }
+
             $shipping['code'] = $carrier->getCarrierCode();
             $shipping['delay'] = (int)$shipping['delay'];
             if (empty($shipping['delay'])) {
@@ -261,6 +268,7 @@ class Paybox_Epayment_Model_Kwixo
         } elseif (preg_match('#^0[1-9][0-9]{8}$#', $text, $matches)) {
             return $text;
         }
+
         throw new \Exception('Invalid phone number "'.$text.'"');
     }
 

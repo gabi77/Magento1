@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.5
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -289,7 +289,7 @@ class Paybox_Epayment_Model_Paybox
             switch ($details['cardType']) {
                 case 'PAYPAL':
                 $fields['ACQUEREUR'] = 'PAYPAL';
-                break;
+                    break;
             }
         }
 
@@ -297,11 +297,13 @@ class Paybox_Epayment_Model_Paybox
         $url = $this->checkUrls($urls);
 
         // Init client
-        $clt = new Varien_Http_Client($url, array(
+        $clt = new Varien_Http_Client(
+            $url, array(
             'maxredirects' => 0,
             'useragent' => 'Magento Verifone e-commerce module',
             'timeout' => 5,
-            ));
+            )
+        );
         $clt->setMethod(Varien_Http_Client::POST);
         $clt->setRawData(http_build_query($fields));
 
@@ -347,10 +349,12 @@ class Paybox_Epayment_Model_Paybox
             $code = array_keys($cards);
             $code = $code[0];
         }
+
         if (!isset($cards[$code])) {
             $message = 'No card with code %s.';
             Mage::throwException(Mage::helper('pbxep')->__($message), $code);
         }
+
         $card = $cards[$code];
         $values['PBX_TYPEPAIEMENT'] = $card['payment'];
         $values['PBX_TYPECARTE'] = $card['card'];
@@ -386,7 +390,7 @@ class Paybox_Epayment_Model_Paybox
             switch ($payment->getPayboxAction()) {
                 case Paybox_Epayment_Model_Payment_Abstract::PBXACTION_MANUAL:
                 $values['PBX_AUTOSEULE'] = 'O';
-                break;
+                    break;
 
                 case Paybox_Epayment_Model_Payment_Abstract::PBXACTION_DEFERRED:
                 $delay = (int) $payment->getConfigData('delay');
@@ -395,8 +399,9 @@ class Paybox_Epayment_Model_Paybox
                 } elseif ($delay > 7) {
                     $delay = 7;
                 }
+
                 $values['PBX_DIFF'] = sprintf('%02d', $delay);
-                break;
+                    break;
             }
         }
 
@@ -414,10 +419,12 @@ class Paybox_Epayment_Model_Paybox
         if (!empty($lang)) {
             $lang = preg_replace('#_.*$#', '', $lang->getLocaleCode());
         }
+
         $languages = $config->getLanguages();
         if (!array_key_exists($lang, $languages)) {
             $lang = 'default';
         }
+
         $lang = $languages[$lang];
         $values['PBX_LANGUE'] = $lang;
 
@@ -457,6 +464,7 @@ class Paybox_Epayment_Model_Paybox
             foreach ($items as $item) {
                 $products[] = $item->getName();
             }
+
             $data_Paypal .= $this->cleanForPaypalData(implode('-', $products), 127);
 
             $values['PBX_PAYPAL_DATA'] = $data_Paypal;
@@ -499,17 +507,20 @@ class Paybox_Epayment_Model_Paybox
         if ($nbCaracter > 0) {
             $string = substr($string, 0, $nbCaracter);
         }
+
         return $string;
     }
 
     public function checkUrls(array $urls)
     {
         // Init client
-        $client = new Varien_Http_Client(null, array(
+        $client = new Varien_Http_Client(
+            null, array(
             'maxredirects' => 0,
             'useragent' => 'Magento Verifone e-commerce module',
             'timeout' => 5,
-            ));
+            )
+        );
         $client->setMethod(Varien_Http_Client::GET);
 
         $error = null;
@@ -598,11 +609,13 @@ class Paybox_Epayment_Model_Paybox
             );
 
         // Init client
-        $clt = new Varien_Http_Client($url, array(
+        $clt = new Varien_Http_Client(
+            $url, array(
             'maxredirects' => 0,
             'useragent' => 'Magento Verifone e-commerce module',
             'timeout' => 5,
-            ));
+            )
+        );
         $clt->setMethod(Varien_Http_Client::POST);
         $clt->setRawData(http_build_query($fields));
 
@@ -615,6 +628,7 @@ class Paybox_Epayment_Model_Paybox
             } else {
                 $body = $response->getBody();
             }
+
             $result = array();
             parse_str($body, $result);
             return $result;
@@ -641,6 +655,7 @@ class Paybox_Epayment_Model_Paybox
                 #require_once 'Zend/Http/Exception.php';
             $body = sprintf("%x\r\n%s\r\n", strlen($body), $body);
             }
+
             if (!preg_match("/^([\da-fA-F]+)[^\r\n]*\r\n/sm", $body, $m)) {
                 throw new Zend_Http_Exception("Error parsing body - doesn't seem to be a chunked message");
             }
@@ -691,6 +706,7 @@ class Paybox_Epayment_Model_Paybox
         } else {
             $currency = $order->getBaseCurrencyCode();
         }
+
         return $currencyMapper->getIsoCode($currency);
     }
 
@@ -711,6 +727,7 @@ class Paybox_Epayment_Model_Paybox
         if (empty($data)) {
             $data = $_SERVER['QUERY_STRING'];
         }
+
         if (empty($data)) {
             $helper = Mage::helper('pbxep');
             Mage::throwException($helper->__('An unexpected error in Verifone e-commerce call has occured: no parameters.'));
@@ -850,6 +867,7 @@ class Paybox_Epayment_Model_Paybox
         foreach ($values as $name => $value) {
             $query[] = $name . '=' . $value;
         }
+
         $query = implode('&', $query);
 
         // Prepare key
@@ -871,6 +889,7 @@ class Paybox_Epayment_Model_Paybox
         if (isset($this->_errorCode[$code])) {
             return $this->_errorCode[$code];
         }
+
         return 'Unknown error ' . $code;
     }
 
@@ -902,6 +921,7 @@ class Paybox_Epayment_Model_Paybox
             $message = 'Not existing order id from decrypted token "%s"';
             Mage::throwException(Mage::helper('pbxep')->__($message, $token));
         }
+
         if (is_null($order->getId())) {
             $message = 'Not existing order id from decrypted token "%s"';
             Mage::throwException(Mage::helper('pbxep')->__($message, $token));

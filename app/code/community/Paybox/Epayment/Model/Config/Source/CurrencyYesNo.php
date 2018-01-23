@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -32,9 +32,9 @@ class Paybox_Epayment_Model_Config_Source_CurrencyYesNo
     {
         $currencies = Mage::app()->getStore()->getAvailableCurrencyCodes();
         if (count($currencies) > 1) {
-            return [['value' => 1, 'label' => __('Default store currency')], ['value' => 0, 'label' => __('Order currency')]];
+            return array(array('value' => 1, 'label' => __('Default store currency')), array('value' => 0, 'label' => __('Order currency')));
         } else {
-            return [['value' => 1, 'label' => __('Default store currency')]];
+            return array(array('value' => 1, 'label' => __('Default store currency')));
         }
     }
 
@@ -45,6 +45,6 @@ class Paybox_Epayment_Model_Config_Source_CurrencyYesNo
      */
     public function toArray()
     {
-        return [0 => __('Order currency'), 1 => __('Default store currency')];
+        return array(0 => __('Order currency'), 1 => __('Default store currency'));
     }
 }

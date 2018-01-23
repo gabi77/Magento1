@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -49,6 +49,7 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
         if (is_null($order) || is_null($order->getId())) {
             return null;
         }
+
         return $order;
     }
 
@@ -182,15 +183,15 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
             $res = $method->onIPNCalled($order, $params);
 
             if ($res) {
-                echo 'Done.';
+                $this->logDebug('(IPN) Done.');
             } else {
-                echo 'Already done.';
+                $this->logDebug('(IPN) Already done.');
             }
         } catch (Exception $e) {
             $message = sprintf('(IPN) Exception %s (%s %d).', $e->getMessage(), $e->getFile(), $e->getLine());
             $this->logFatal($message);
             header('Status: 500 Error', true, 500);
-            echo $e->getMessage();
+            $this->logFatal($e->getMessage());
         }
     }
 
@@ -252,6 +253,7 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
         if (is_null($orders)) {
             $orders = array();
         }
+
         $orders[Mage::helper('core')->encrypt($orderId)] = true;
         $session->setPbxepOrders($orders);
 

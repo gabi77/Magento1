@@ -13,7 +13,7 @@
  * support@paybox.com so we can mail you a copy immediately.
  *
  *
- * @version   3.0.4
+ * @version   3.0.6
  * @author    BM Services <contact@bm-services.com>
  * @copyright 2012-2017 Verifone e-commerce
  * @license   http://opensource.org/licenses/OSL-3.0
@@ -31,9 +31,11 @@ class Paybox_Epayment_Block_Admin_Presentation extends Mage_Adminhtml_Block_Temp
         if (!empty($lang)) {
             $lang = preg_replace('#_.*$#', '', $lang->getLocaleCode());
         }
+
         if (!in_array($lang, array('fr', 'en'))) {
             $lang = 'en';
         }
+
         $this->setTemplate('pbxep/presentation/'.$lang.'.phtml');
     }
 }
