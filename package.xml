@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <name>Paybox_epayment</name>
-    <version>3.0.5</version>
+    <version>3.0.6</version>
     <stability>stable</stability>
     <license uri="http://opensource.org/licenses/osl-3.0.php">Open Software License (OSL 3.0)</license>
     <channel>community</channel>
@@ -14,6 +14,18 @@ Des outils anti-fraude &#xE0; la carte : 3D Secure, Filtres sur nationalit&#xE9;
 La possibilit&#xE9; de prise de paiement par t&#xE9;l&#xE9;phone&#xD;
 Un acc&#xE8;s Back Office Paybox avec des fonctions de reporting : suivi transactions temps r&#xE9;el et export de journaux d&#x2019;encaissement</description>
     <notes>Change Log&#xD;
+&#xD;
+[3.0.6] 2018-01-24&#xD;
+Ajouts&#xD;
+- Remboursement : finalisation (1x &amp; 3x)&#xD;
+&#xD;
+Corrections&#xD;
+- Traductions : accents&#xD;
+&#xD;
+Modifications&#xD;
+- Back Office / Email : Remove details from email and customer account&#xD;
+- Code : corrections MEQP1 (phpcbf)&#xD;
+- Code : nettoyage (debug, code mort et redondant)&#xD;
 &#xD;
 [3.0.5] - 2017-10-03&#xD;
 Corrections&#xD;

@@ -1,4 +1,16 @@
 # Change Log
+## [3.0.6] 2018-01-24
+### Ajouts
+- Remboursement : finalisation (1x & 3x)
+
+### Corrections
+- Traductions : accents
+
+### Modifications
+- Back Office / Email : Remove details from email and customer account
+- Code : corrections MEQP1 (phpcbf)
+- Code : nettoyage (debug, code mort et redondant)
+
 ## [3.0.5] 2017-10-03
 ### Corrections
 - IPN : gestion IPN successifs pour paiement en 3 fois (sauvegarde de la commande pour mise à jour des informations)
