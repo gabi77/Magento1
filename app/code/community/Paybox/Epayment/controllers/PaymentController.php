@@ -80,8 +80,10 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
             // Cleanup
             $session->unsCurrentPbxepOrderId();
 
-            $message = sprintf('Order %d: Payment was canceled by user on Verifone e-commerce payment page.', $order->getIncrementId());
-            $this->logDebug($message);
+            $this->logDebug(sprintf(
+                'Order %d: Payment was canceled by user on Verifone e-commerce payment page.',
+                $order->getIncrementId()
+            ));
 
             $message = $this->__('Payment canceled by user');
             $session->addError($message);
@@ -120,8 +122,11 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
             // Cleanup
             $session->unsCurrentPbxepOrderId();
 
-            $message = sprintf('Order %d: Customer is back from Verifone e-commerce payment page. Payment refused by Verifone e-commerce (%d).', $order->getIncrementId(), $params['error']);
-            $this->logDebug($message);
+            $this->logDebug(sprintf(
+                'Order %d: Customer is back from Verifone e-commerce payment page. Payment refused by Verifone e-commerce (%d).',
+                $order->getIncrementId(),
+                $params['error']
+            ));
 
             $message = $this->__('Payment refused by Verifone e-commerce');
             $session->addError($message);
@@ -183,15 +188,18 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
             $res = $method->onIPNCalled($order, $params);
 
             if ($res) {
-                $this->logDebug('(IPN) Done.');
+                $this->logDebug(sprintf('Order %d: (IPN) Done.', $order->getIncrementId()));
             } else {
-                $this->logDebug('(IPN) Already done.');
+                $this->logDebug(sprintf('Order %d: (IPN) Already done.', $order->getIncrementId()));
             }
         } catch (Exception $e) {
-            $message = sprintf('(IPN) Exception %s (%s %d).', $e->getMessage(), $e->getFile(), $e->getLine());
-            $this->logFatal($message);
+            $this->logFatal(sprintf(
+                '(IPN) Exception %s (%s %d).',
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            ));
             header('Status: 500 Error', true, 500);
-            $this->logFatal($e->getMessage());
         }
     }
 
@@ -290,8 +298,10 @@ class Paybox_Epayment_PaymentController extends Mage_Core_Controller_Front_Actio
             // Cleanup
             $session->unsCurrentPbxepOrderId();
 
-            $message = sprintf('Order %s: Customer is back from Verifone e-commerce payment page. Payment success.', $order->getIncrementId());
-            $this->logDebug($message);
+            $this->logDebug(sprintf(
+                'Order %s: Customer is back from Verifone e-commerce payment page. Payment success.',
+                $order->getIncrementId()
+            ));
 
             // Redirect to success page
             $this->_redirect('checkout/onepage/success');

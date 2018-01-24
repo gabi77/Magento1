@@ -54,7 +54,6 @@ class Paybox_Epayment_Block_Checkout_Payment extends Mage_Payment_Block_Form_Cc
 
     public function getMethodLabelAfterHtml()
     {
-        $cards = $this->getCreditCards();
         $html = array();
 
         $path = 'payment/'.$this->getMethod()->getCode().'/cards';

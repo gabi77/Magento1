@@ -245,7 +245,11 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     public function capture(Varien_Object $payment, $amount)
     {
         $order = $payment->getOrder();
-        $this->logDebug(sprintf('Order %s: Capture for %f', $order->getIncrementId(), $amount));
+        $this->logDebug(sprintf(
+            'Order %s: Capturing amount: %0.2f',
+            $order->getIncrementId(),
+            $amount
+        ));
 
         // Currently processing a transaction ? Use it.
         if (!is_null($this->_processingTransaction)) {
@@ -296,13 +300,20 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
             }
         }
 
-        $this->logDebug(sprintf('Order %s: Capture - transaction %d', $order->getIncrementId(), $txn->getTransactionId()));
-
         // Call Verifone e-commerce Direct
         $paybox = $this->getPaybox();
-        $this->logDebug(sprintf('Order %s: Capture - calling directCapture with amount of %f', $order->getIncrementId(), $amount));
+        $this->logDebug(sprintf(
+            'Order %s: Capture - Transaction %d Direct capture for %0.2f',
+            $order->getIncrementId(),
+            $txn->getTransactionId(),
+            $amount
+        ));
         $data = $paybox->directCapture($amount, $order, $txn);
-        $this->logDebug(sprintf('Order %s: Capture - response code %s', $order->getIncrementId(), $data['CODEREPONSE']));
+        $this->logDebug(sprintf(
+            'Order %s: Capture - Response code %s',
+            $order->getIncrementId(),
+            $data['CODEREPONSE']
+        ));
 
         // Message
         if ($data['CODEREPONSE'] == '00000') {
@@ -314,7 +325,11 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         }
 
         $data['status'] = $message;
-        $this->logDebug(sprintf('Order %s: Capture - %s', $order->getIncrementId(), $message));
+        $this->logDebug(sprintf(
+            'Order %s: Capture - %s',
+            $order->getIncrementId(),
+            $message
+        ));
 
         // Transaction
         $type = Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE;
@@ -361,7 +376,11 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         foreach ($requiredParams as $requiredParam) {
             if (!isset($params[$requiredParam])) {
                 $message = $this->__('Missing ' . $requiredParam . ' parameter in Verifone e-commerce call');
-                $this->logFatal(sprintf('Order %s: (IPN) %s', $order->getIncrementId(), $message));
+                $this->logFatal(sprintf(
+                    'Order %s: (IPN) %s',
+                    $order->getIncrementId(),
+                    $message
+                ));
                 Mage::throwException($message);
             }
         }
@@ -632,7 +651,11 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         }
 
         $data['status'] = $message;
-        $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
+        $this->logDebug(sprintf(
+            'Order %s: %s',
+            $order->getIncrementId(),
+            $message
+        ));
 
         // Transaction
         $transaction = $this->_addPayboxDirectTransaction($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND, $data, true, array(), $txn);
@@ -663,9 +686,11 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
     public function deleteRecurringPayment(Mage_Sales_Model_Order $order)
     {
         $paybox = $this->getPaybox();
-        $this->logDebug(sprintf('Order %s: Cancel recurring payment - calling directRecurringDelete', $order->getIncrementId()));
+        $this->logDebug(sprintf(
+            'Order %s: Cancel recurring payment - calling directRecurringDelete',
+            $order->getIncrementId()
+        ));
         $result = $paybox->directRecurringDelete($order);
-        $this->logDebug(sprintf('Order %s: Cancel recurring payment', $order->getIncrementId()));
 
         // Check answer
         if ($result['ACQ'] != 'OK') {
@@ -721,7 +746,11 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         // If cron is not active, we cancel the order
         if (!$config->isCronCancelIsActive()) {
             $order->cancel();
-            $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
+            $this->logDebug(sprintf(
+                'Order %s: %s',
+                $order->getIncrementId(),
+                $message
+            ));
             $order->save();
         }
 
@@ -752,13 +781,14 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
         $info->setPbxepPaymentAction($this->getConfigPaymentAction());
         $info->setPbxepPayboxAction($this->getPayboxAction());
         $info->save();
+
         // Keep track of this redirection in order history
         $message = 'Redirecting customer to Verifone e-commerce payment page.';
         $status = $order->addStatusHistoryComment($this->__($message));
+        $status->save();
 
         $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
 
-        $status->save();
     }
 
     /**
@@ -814,8 +844,6 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
      */
     public function onIPNError(Mage_Sales_Model_Order $order, array $data, Exception $e = null)
     {
-        $withCapture = $this->getConfigPaymentAction() != Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE;
-
         // Message
         $message = 'An unexpected error have occured while processing Verifone e-commerce payment (%s).';
         $error = is_null($e) ? 'unknown error' : $e->getMessage();
@@ -828,9 +856,6 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
 
         // Transaction
         if (is_null($this->_processingTransaction)) {
-            //            $type = $withCapture ?
-//                    Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE :
-//                    Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH;
             $type = Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID;
             $this->_addPayboxTransaction($order, $type, $data, true);
         } else {
@@ -845,20 +870,19 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
      */
     public function onIPNFailed(Mage_Sales_Model_Order $order, array $data)
     {
-        $withCapture = $this->getConfigPaymentAction() != Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE;
-
         // Message
         $message = 'Payment was refused by Verifone e-commerce (%s).';
         $error = $this->getPaybox()->toErrorMessage($data['error']);
         $message = $this->__($message, $error);
         $data['status'] = $message;
         $order->addStatusHistoryComment($message);
-        $this->logDebug(sprintf('Order %s: (IPN) %s', $order->getIncrementId(), $message));
+        $this->logDebug(sprintf(
+            'Order %s: (IPN) %s',
+            $order->getIncrementId(),
+            $message
+        ));
 
         // Transaction
-//        $type = $withCapture ?
-//                    Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE :
-//                    Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH;
         $type = Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID;
         $this->_addPayboxTransaction($order, $type, $data, true);
 
@@ -870,8 +894,6 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
      */
     public function onIPNSuccess(Mage_Sales_Model_Order $order, array $data)
     {
-        $this->logDebug(sprintf('Order %s: Standard IPN', $order->getIncrementId()));
-
         $payment = $order->getPayment();
 
         $withCapture = $this->getConfigPaymentAction() != Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE;
@@ -900,7 +922,6 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
 
         // Status and message
         $current = $order->getState();
-        $message = $this->__($message);
 
         // Create transaction
         $type = $withCapture ?
@@ -924,13 +945,21 @@ abstract class Paybox_Epayment_Model_Payment_Abstract extends Mage_Payment_Model
 
         // Set status
         if (in_array($current, $allowedStates)) {
-            $order->setState($state, $status, $message);
-            $this->logDebug(sprintf('Order %s: Change status to %s', $order->getIncrementId(), $status));
+            $order->setState($state, $status, $this->__($message));
+            $this->logDebug(sprintf(
+                'Order %s: Change status to %s',
+                $order->getIncrementId(),
+                $state
+            ));
         } else {
-            $order->addStatusHistoryComment($message);
+            $order->addStatusHistoryComment($this->__($message));
         }
 
-        $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
+        $this->logDebug(sprintf(
+            'Order %s: %s',
+            $order->getIncrementId(),
+            $message
+        ));
 
         $order->save();
 

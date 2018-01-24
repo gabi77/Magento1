@@ -30,21 +30,37 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
     public function checkIpnParams(Mage_Sales_Model_Order $order, array $params)
     {
         if (!isset($params['amount'])) {
-            $message = $this->__('Missing amount parameter');
-            $this->logFatal(sprintf('Order %s: (IPN) %s', $order->getIncrementId(), $message));
+            $message = 'Missing amount parameter';
+            $this->logFatal(sprintf(
+                'Order %d: (IPN) %s',
+                $order->getIncrementId(),
+                $message
+            ));
             Mage::throwException($message);
         }
 
         if (!isset($params['transaction'])) {
-            $message = $this->__('Missing transaction parameter');
-            $this->logFatal(sprintf('Order %s: (IPN) %s', $order->getIncrementId(), $message));
+            $message = 'Missing transaction parameter';
+            $this->logFatal(sprintf(
+                'Order %d: (IPN) %s',
+                $order->getIncrementId(),
+                $message
+            ));
             Mage::throwException($message);
         }
     }
 
     public function onIPNSuccess(Mage_Sales_Model_Order $order, array $data)
     {
-        $this->logDebug(sprintf('Order %s: Threetime IPN', $order->getIncrementId()));
+
+        $cntr = Mage::getSingleton('pbxep/paybox');
+        $amountScale = $cntr->getCurrencyScale($order);
+
+        $this->logDebug(sprintf(
+            'Order %d: Threetime onIPNSuccess for amount %0.2f',
+            $order->getIncrementId(),
+            round($data['amount'] / $amountScale)
+        ));
 
         $payment = $order->getPayment();
 
@@ -60,7 +76,10 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             )
         );
         if (is_null($payment->getPbxepFirstPayment())) {
-            $this->logDebug(sprintf('Order %s: First payment', $order->getIncrementId()));
+            $this->logDebug(sprintf(
+                'Order %d: First payment',
+                $order->getIncrementId()
+            ));
 
             // Message
             $message = 'Payment was authorized and captured by Verifone e-commerce.';
@@ -74,25 +93,32 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
                 Mage_Sales_Model_Order::STATE_PROCESSING,
             );
             $current = $order->getState();
-            $message = $this->__($message);
             if (in_array($current, $allowedStates)) {
-                $order->setState($state, $status, $message);
+                $order->setState($state, $status, $this->__($message));
             } else {
-                $order->addStatusHistoryComment($message);
+                $order->addStatusHistoryComment($this->__($message));
             }
 
             // Additional informations
             $payment->setPbxepFirstPayment(serialize($data));
             $payment->setPbxepAuthorization(serialize($data));
 
-            $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
+            $this->logDebug(sprintf(
+                'Order %d: %s',
+                $order->getIncrementId(),
+                $message
+            ));
 
             // Create invoice is needed
             $invoice = $this->_createInvoice($order, $txn);
             // Set status
             if (in_array($current, $allowedStates)) {
                 $order->setState($state, $status, $message);
-                $this->logDebug(sprintf('Order %s: Change status to %s', $order->getIncrementId(), $status));
+                $this->logDebug(sprintf(
+                    'Order %d: Change status to %s',
+                    $order->getIncrementId(),
+                    $status
+                ));
             } else {
                 $order->addStatusHistoryComment($message);
             }
@@ -100,35 +126,45 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
             $order->save();
         } elseif (is_null($payment->getPbxepSecondPayment())) {
             // Message
-            $message = $this->__('Second payment was captured by Verifone e-commerce.');
-            $order->addStatusHistoryComment($message);
+            $message = 'Second payment was captured by Verifone e-commerce.';
+            $order->addStatusHistoryComment($this->__($message));
 
             // Additional informations
             $payment->setPbxepSecondPayment(serialize($data));
-            $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
+            $this->logDebug(sprintf(
+                'Order %d: %s',
+                $order->getIncrementId(),
+                $message
+            ));
             $transaction = $this->_addPayboxDirectTransaction($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE, $data, true, array(), $txn);
             $transaction->save();
             $order->save();
         } elseif (is_null($payment->getPbxepThirdPayment())) {
             // Message
-            $message = $this->__('Third payment was captured by Verifone e-commerce.');
-            $order->addStatusHistoryComment($message);
+            $message = 'Third payment was captured by Verifone e-commerce.';
+            $order->addStatusHistoryComment($this->__($message));
 
             // Additional informations
             $payment->setPbxepThirdPayment(serialize($data));
-            $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
+            $this->logDebug(sprintf(
+                'Order %d: %s',
+                $order->getIncrementId(),
+                $message
+            ));
 
             $transaction = $this->_addPayboxDirectTransaction($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE, $data, true, array(), $txn);
             $transaction->save();
             $txn->closeCapture();
             $order->save();
         } else {
-            $this->logDebug(sprintf('Order %s: Invalid three-time payment status', $order->getIncrementId()));
+            $this->logDebug(sprintf(
+                'Order %d: Invalid three-time payment status',
+                $order->getIncrementId()
+            ));
             Mage::throwException('Invalid three-time payment status');
         }
 
         $data['status'] = $message;
-
 
         // Associate data to payment
         $payment->setPbxepAction('three-time');
@@ -151,8 +187,8 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
 
         // Find capture transaction
         $this->logDebug(sprintf(
-            "Looking for transactions for Order ID %d and Payment ID %d Type %s",
-            $order->getId(),
+            'Order %d: Looking for transactions Payment ID %d Type %s',
+            $order->getIncrementId(),
             $payment->getId(),
             Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE
         ));
@@ -176,10 +212,12 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
 
                 $cntr = Mage::getSingleton('pbxep/paybox');
                 $amountScale = $cntr->getCurrencyScale($order);
-                $amount = $txn->getAdditionalInformation(Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS)['amount'];
+                $additionalInformation = $txn->getAdditionalInformation(Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS);
+                $amount = $additionalInformation['amount'];
                 $amount = round($amount / $amountScale);
                 $this->logDebug(sprintf(
-                    "Trying to refund transaction ID %d for an amount of %s",
+                    'Order %d: Trying to refund transaction ID %d for an amount of %s',
+                    $order->getIncrementId(),
                     $txn->getTxnId(),
                     $amount
                 ));
@@ -193,7 +231,9 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
                 }
 
                 $data['status'] = $message;
-                $this->logDebug(sprintf('Order %s: %s', $order->getIncrementId(), $message));
+                $this->logDebug(sprintf(
+                    'Order %d: %s', $order->getIncrementId(), $message
+                ));
 
                 // Transaction
                 $transaction = $this->_addPayboxDirectTransaction($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND, $data, true, array(), $txn);
@@ -222,9 +262,9 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
     private function txnHasBeenRefunded($order, Varien_Object $payment, $txnId)
     {
         $this->logDebug(sprintf(
-            "Looking for a transaction ID %d for Order ID %d - Type %s",
+            'Order %d: Looking for a transaction ID %d - Type %s',
+            $order->getIncrementId(),
             $txnId,
-            $order->getId(),
             Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND
         ));
         $collection = Mage::getModel('sales/order_payment_transaction')->getCollection()
@@ -233,10 +273,18 @@ class Paybox_Epayment_Model_Payment_Threetime extends Paybox_Epayment_Model_Paym
                 ->addAttributeToFilter('parent_txn_id', $txnId)
                 ->addTxnTypeFilter(Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND);
         if ($collection->getSize() == 0) {
-            $this->logDebug(sprintf("Transaction %d has NOT already been refunded", $txnId));
+            $this->logDebug(sprintf(
+                'Order %d: Transaction %d has NOT already been refunded',
+                $order->getIncrementId(),
+                $txnId
+            ));
             return false;
         } else {
-            $this->logDebug(sprintf("Transaction %d has already been refunded", $txnId));
+            $this->logDebug(sprintf(
+                'Order %d: Transaction %d has already been refunded',
+                $order->getIncrementId(),
+                $txnId
+            ));
             return  true;
         }
     }
