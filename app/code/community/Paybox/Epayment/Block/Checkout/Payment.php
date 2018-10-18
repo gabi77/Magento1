@@ -58,10 +58,14 @@ class Paybox_Epayment_Block_Checkout_Payment extends Mage_Payment_Block_Form_Cc
 
         $path = 'payment/'.$this->getMethod()->getCode().'/cards';
         $cards = Mage::getStoreConfig($path, $this->getMethod()->getStore());
+        $cardavailable = 'payment/'.$this->getMethod()->getCode().'/cctypes';
+        $cardsavailable = explode(',',Mage::getStoreConfig($cardavailable, $this->getMethod()->getStore()));
         foreach ($cards as $card) {
-            $url = $this->htmlEscape($this->getSkinUrl($card['image']));
-            $alt = $this->htmlEscape($card['label']);
-            $html[] = '<img class="pbxep-payment-logo" src="'.$url.'" alt="'.$alt.'"/>';
+            if(in_array($card['card'], $cardsavailable)){ // Available Logo with payment enabled
+                $url = $this->htmlEscape($this->getSkinUrl($card['image']));
+                $alt = $this->htmlEscape($card['label']);
+                $html[] = '<img class="pbxep-payment-logo" src="' . $url . '" alt="' . $alt . '"/>';
+            }
         }
 
         $html = '<span class="pbxep-payment-label">'.implode('&nbsp;', $html).'</span>';
